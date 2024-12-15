@@ -1,5 +1,7 @@
 import { NewTaskForm } from "./components/new-task-form";
 import { TasksSection } from "./components/tasks-section";
+import { Button } from "./components/ui/button";
+import { HeadingOne } from "./components/ui/heading";
 import { loadTasks } from "./features/task";
 
 export function App() {
@@ -7,7 +9,8 @@ export function App() {
 
   return (
     <div>
-      <h1>My Task Management App</h1>
+      <HeadingOne>My Task Management App</HeadingOne>
+      <Button>Hello</Button>
 
       <NewTaskForm tasks={tasks} />
 

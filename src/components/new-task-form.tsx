@@ -1,4 +1,8 @@
 import { generateId, saveTasks, type Task } from "../features/task";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { Textarea } from "./ui/textarea";
 
 export function NewTaskForm({ tasks }: { tasks: Task[] }) {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -24,11 +28,21 @@ export function NewTaskForm({ tasks }: { tasks: Task[] }) {
         <h2>New Task</h2>
 
         <div>
-          <label htmlFor="title">Task title</label>
-          <input type="text" id="title" name="title" required />
+          <Label htmlFor="title">Task title</Label>
+          <Input type="text" id="title" name="title" required />
         </div>
 
-        <button type="submit">Add Task</button>
+        <div>
+          <Label htmlFor="description">Task description</Label>
+          <Textarea
+            id="description"
+            name="description"
+            rows={3}
+            required
+          ></Textarea>
+        </div>
+
+        <Button type="submit">Add Task</Button>
       </form>
     </div>
   );
