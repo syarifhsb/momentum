@@ -9,7 +9,6 @@ function loadTasks() {
 }
 
 export function Tasks() {
-  console.log(loadTasks());
   return (
     <div>
       <h2>Tasks</h2>
