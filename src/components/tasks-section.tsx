@@ -1,8 +1,6 @@
-import { loadTasks } from "../features/task";
+import { type Task } from "../features/task";
 
-export function TasksContainer() {
-  const tasks = loadTasks();
-
+export function TasksSection({ tasks }: { tasks: Task[] }) {
   return (
     <div>
       <h2>Tasks</h2>

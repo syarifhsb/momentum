@@ -4,6 +4,10 @@ export type Task = {
   description?: string;
 };
 
+export function generateId(tasks: Task[]) {
+  return tasks.reduce((maxId, task) => Math.max(task.id, maxId), 0) + 1;
+}
+
 export function loadTasks() {
   const tasks: Task[] = JSON.parse(localStorage.getItem("tasks") || "[]");
   return tasks;
