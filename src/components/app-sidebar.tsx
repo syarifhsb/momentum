@@ -17,9 +17,12 @@ import { NavSecondary } from "@/components/nav-secondary";
 import {
   Sidebar,
   SidebarContent,
+  SidebarHead,
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { Button } from "./ui/button";
+import { NavUser } from "./nav-user";
 import { NavHead } from "./nav-head";
 
 // This is sample data.
@@ -29,12 +32,13 @@ const data = {
     email: "syarifhasibuan.dev@gmail.com",
     avatar: "/avatars/shadcn.jpg",
   },
-  NavHeadButtons: [
+  navNewTaskButton: [
     {
       title: "New Task",
       url: "#",
       icons: SquarePen,
       tooltip: "Create a new task",
+      tooltipShortcut: "c",
     },
   ],
   navMain: [
@@ -200,7 +204,34 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar className="border-r-0" {...props}>
       <SidebarHeader>
-        <NavHead user={data.user} buttonItems={data.NavHeadButtons} />
+        <NavHead user={data.user} buttonItems={data.navNewTaskButton} />
+        {/* <SidebarHead> */}
+        {/* <NavUser user={data.user} />
+          <ul className="flex flex-row gap-2 p-1">
+            <li key={data.navNewTaskButton.title}>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button className="w-6 h-6" variant="secondary" size="icon">
+                    <data.navNewTaskButton.icons />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-80 z-50">
+                  <div className="grid gap-4">
+                    <div className="space-y-2">
+                      <h4 className="font-medium leading-none">
+                        Popup Content
+                      </h4>
+                      <p className="text-sm text-muted-foreground">
+                        This is an example of a popup using the Popover
+                        component.
+                      </p>
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </li>
+          </ul> */}
+        {/* </SidebarHead> */}
         <NavMain items={data.navMain} />
       </SidebarHeader>
       <SidebarContent>
