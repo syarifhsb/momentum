@@ -1,4 +1,6 @@
 import * as React from "react";
+import { addDays, format } from "date-fns";
+import { cn } from "@/lib/utils";
 import { saveTasks, useTasks, generateId } from "@/features/task";
 import {
   Card,
@@ -20,14 +22,34 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@radix-ui/react-popover";
+import { Calendar } from "@/components/ui/calendar";
+import { CalendarIcon } from "lucide-react";
+
 export function NewTaskForm() {
   const tasks = useTasks();
   const [isTitleEmpty, setIsTitleEmpty] = React.useState(true);
+  const [category, setCategory] = React.useState("");
+  const [date, setDate] = React.useState<Date>();
+  const [datepickerOpen, setDatepickerOpen] = React.useState(false);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const inputData = event.currentTarget.value;
 
     setIsTitleEmpty(inputData.toString().trim() === "");
+  }
+
+  function handleDateButtonClick(
+    event: React.MouseEvent<HTMLButtonElement>,
+    date: Date
+  ) {
+    event.preventDefault();
+    setDate(date);
+    setDatepickerOpen(false);
   }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -48,6 +70,7 @@ export function NewTaskForm() {
 
     window.location.href = `/`;
   }
+
   return (
     <div>
       <Card className="w-[350px]">
@@ -76,8 +99,14 @@ export function NewTaskForm() {
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="category">Category</Label>
-                <Select name="category">
-                  <SelectTrigger id="category">
+                <Select
+                  name="category"
+                  onValueChange={(value) => setCategory(value)}
+                >
+                  <SelectTrigger
+                    id="category"
+                    className={!category ? "text-muted-foreground" : ""}
+                  >
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
                   <SelectContent position="popper">
@@ -87,6 +116,62 @@ export function NewTaskForm() {
                     <SelectItem value="Others">Others</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="date">Deadline</Label>
+                <Popover open={datepickerOpen} onOpenChange={setDatepickerOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className={cn(
+                        "font-normal",
+                        !date && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon />
+                      {date ? format(date, "PPP") : <span>Pick a date</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    className="bg-popover text-popover-foreground rounded-sm shadow-lg p-1 border"
+                    align="start"
+                  >
+                    <Button
+                      variant="secondary"
+                      onClick={(event) =>
+                        handleDateButtonClick(event, new Date())
+                      }
+                    >
+                      Today
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      onClick={(event) =>
+                        handleDateButtonClick(event, addDays(new Date(), 1))
+                      }
+                    >
+                      Tomorrow
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      onClick={(event) =>
+                        handleDateButtonClick(event, addDays(new Date(), 7))
+                      }
+                    >
+                      Next Week
+                    </Button>
+                    <Calendar
+                      className="rounded-md border shadow"
+                      mode="single"
+                      selected={date}
+                      onSelect={(newDate) => {
+                        setDate(newDate);
+                        setDatepickerOpen(false);
+                      }}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
               </div>
             </div>
           </CardContent>

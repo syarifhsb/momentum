@@ -22,7 +22,11 @@ export function TaskCardItem({ task }: { task: Task }) {
 
   function handleChangeCategory(category: string) {
     return () => {
-      task.category = category;
+      if (category === "remove") {
+        task.category = "";
+      } else {
+        task.category = category;
+      }
       saveTasks(tasks.map((t) => (t.id === task.id ? task : t)));
       //   Question: How to update the task category on UI without reloading the page?
       window.location.href = `/`;
@@ -60,7 +64,7 @@ export function TaskCardItem({ task }: { task: Task }) {
                   <span>
                     <PencilIcon className="h-3 w-3" />
                   </span>
-                  <p className="text-sm">Modify</p>
+                  <p className="text-sm">Edit</p>
                   <DropdownMenuShortcut>m</DropdownMenuShortcut>
                 </DropdownMenuItem>
                 <DropdownMenuItem
@@ -80,7 +84,7 @@ export function TaskCardItem({ task }: { task: Task }) {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
-                  className="h-6 data-[state=open]:bg-accent p-0.5 border"
+                  className="gap-1 h-6 data-[state=open]:bg-accent p-0.5 border"
                   variant="ghost"
                   size="sm"
                 >
@@ -89,13 +93,24 @@ export function TaskCardItem({ task }: { task: Task }) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="min-w-20 bg-popover text-popover-foreground rounded-sm shadow-lg cursor-pointer p-1 border">
+                <DropdownMenuItem
+                  onSelect={handleChangeCategory("remove")}
+                  className="flex flex-row gap-1 p-0.5 items-center rounded-sm hover:bg-primary focus:bg-primary outline-none"
+                  key="remove"
+                >
+                  <span>
+                    <TrashIcon className="h-3 w-3" />
+                  </span>
+                  <p className="text-xs">Remove Category</p>
+                </DropdownMenuItem>
                 {categories.map((category) => (
                   <DropdownMenuItem
                     onSelect={handleChangeCategory(category)}
-                    className="text-xs"
+                    className="flex flex-row gap-1 p-0.5 items-center rounded-sm hover:bg-primary focus:bg-primary outline-none"
                     key={category}
                   >
-                    {category}
+                    <GroupIcon className="h-3 w-3" />
+                    <p className="text-xs">{category}</p>
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
