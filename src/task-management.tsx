@@ -5,7 +5,7 @@ import { HeadingOne } from "@/components/features/typography";
 export function TaskManagement() {
   return (
     <div>
-      <HeadingOne>Task Management</HeadingOne>
+      <HeadingOne className="text-center">Task Management</HeadingOne>
       <ExistingTasks />
       <NewTaskForm />
     </div>

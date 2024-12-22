@@ -1,7 +1,14 @@
-export function HeadingOne({ children }: { children: React.ReactNode }) {
-  return <h1 className="text-4xl font-bold">{children}</h1>;
+import { cn } from "@/lib/utils";
+
+type HeadingProps = {
+  children: React.ReactNode;
+  className?: string;
+};
+
+export function HeadingOne({ children, className }: HeadingProps) {
+  return <h1 className={cn("text-4xl font-bold", className)}>{children}</h1>;
 }
 
-export function HeadingTwo({ children }: { children: React.ReactNode }) {
-  return <h2 className="text-3xl font-bold">{children}</h2>;
+export function HeadingTwo({ children, className }: HeadingProps) {
+  return <h2 className={cn("text-3xl font-bold", className)}>{children}</h2>;
 }

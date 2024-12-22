@@ -63,7 +63,7 @@ export function NewTaskForm() {
                   name="title"
                   id="title"
                   onChange={handleChange}
-                  placeholder="Helping grandma"
+                  placeholder="New Task"
                 />
               </div>
               <div className="flex flex-col space-y-1.5">
@@ -71,7 +71,7 @@ export function NewTaskForm() {
                 <Textarea
                   name="description"
                   id="description"
-                  placeholder="Cutting the grass"
+                  placeholder="Description"
                 />
               </div>
               <div className="flex flex-col space-y-1.5">
@@ -81,10 +81,10 @@ export function NewTaskForm() {
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
                   <SelectContent position="popper">
-                    <SelectItem value="personal">Personal</SelectItem>
-                    <SelectItem value="work">Work</SelectItem>
-                    <SelectItem value="shopping">Shopping</SelectItem>
-                    <SelectItem value="others">Others</SelectItem>
+                    <SelectItem value="Personal">Personal</SelectItem>
+                    <SelectItem value="Work">Work</SelectItem>
+                    <SelectItem value="Shopping">Shopping</SelectItem>
+                    <SelectItem value="Others">Others</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
