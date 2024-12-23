@@ -30,7 +30,7 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "lucide-react";
 
-export function NewTaskForm() {
+export function NewTaskForm({ setCloseForm }: { setCloseForm: () => void }) {
   const tasks = useTasks();
   const [isTitleEmpty, setIsTitleEmpty] = React.useState(true);
   const [category, setCategory] = React.useState("");
@@ -69,6 +69,7 @@ export function NewTaskForm() {
       },
     ]);
 
+    setCloseForm();
     window.location.href = `/`;
   }
 
@@ -176,8 +177,11 @@ export function NewTaskForm() {
               </div>
             </div>
           </CardContent>
-          <CardFooter className="flex justify-between">
+          <CardFooter className="flex flex-row justify-between">
             <div className="ml-auto">
+              <Button variant="outline" onClick={setCloseForm}>
+                Cancel
+              </Button>
               <Button type="submit" disabled={isTitleEmpty}>
                 Create
               </Button>
