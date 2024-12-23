@@ -12,7 +12,11 @@ export function generateId(tasks: Task[]) {
 
 export function useTasks() {
   const tasks: Task[] = JSON.parse(localStorage.getItem("tasks") || "[]");
-  return tasks;
+  const tasksMap = tasks.map((task) => ({
+    ...task,
+    date: task.date ? new Date(task.date) : new Date(),
+  }));
+  return tasksMap;
 }
 
 export function saveTasks(tasks: Task[]) {

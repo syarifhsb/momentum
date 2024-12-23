@@ -20,7 +20,7 @@ export function ExistingTasks({
 }) {
   return (
     <div>
-      <Card className="w-[350px]">
+      <Card className="w-[350px] p-0">
         <CardHeader>
           <CardTitle>Existing Tasks</CardTitle>
           <CardDescription>

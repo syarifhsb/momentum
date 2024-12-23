@@ -74,12 +74,12 @@ export function NewTaskForm({
         title: newTaskData["title"].toString(),
         description: newTaskData["description"].toString(),
         category: newTaskData["category"].toString(),
+        // Question: Doesn't obtain the date from the form. Is this okay?
         date: date,
       },
     ]);
 
     setFormOpen(false);
-    // window.location.href = `/`;
     setNoOfTasks(noOfTasks + 1);
   }
 
@@ -88,10 +88,10 @@ export function NewTaskForm({
       <DialogTrigger asChild>
         <Button variant="default">Create New Task</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Create new task</DialogTitle>
-          <DialogDescription hidden>Create a new task</DialogDescription>
+          <DialogDescription hidden>Submit your new task.</DialogDescription>
         </DialogHeader>
         <form method="post" onSubmit={handleSubmit}>
           <div className="grid w-full items-center gap-4">

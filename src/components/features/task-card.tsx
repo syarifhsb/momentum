@@ -1,5 +1,13 @@
 import * as React from "react";
-import { addDays, format } from "date-fns";
+import {
+  addDays,
+  differenceInDays,
+  format,
+  isToday,
+  isTomorrow,
+  isYesterday,
+  startOfDay,
+} from "date-fns";
 import { saveTasks, Task, useTasks } from "@/features/task";
 import {
   Card,
@@ -154,8 +162,10 @@ export function TaskCardItem({
                       variant={
                         !task.date
                           ? "outline"
-                          : Date.parse(task.date.toString()) >=
-                            new Date().getTime()
+                          : differenceInDays(
+                              task.date,
+                              startOfDay(new Date())
+                            ) >= 0
                           ? "secondary"
                           : "destructive"
                       }
@@ -163,7 +173,15 @@ export function TaskCardItem({
                     >
                       <CalendarIcon className="h-3 w-3" />
                       <p>
-                        {task.date ? format(task.date, "PPP") : "No Deadline"}
+                        {!task.date
+                          ? "No Deadline"
+                          : isYesterday(task.date)
+                          ? "Yesterday"
+                          : isToday(task.date)
+                          ? "Today"
+                          : isTomorrow(task.date)
+                          ? "Tomorrow"
+                          : format(task.date, "PPP")}
                       </p>
                     </Button>
                   </PopoverTrigger>
