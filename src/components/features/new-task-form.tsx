@@ -74,121 +74,117 @@ export function NewTaskForm({ setCloseForm }: { setCloseForm: () => void }) {
   }
 
   return (
-    <div>
-      <Card className="w-[350px]">
-        <form method="post" onSubmit={handleSubmit}>
-          <CardHeader>
-            <CardTitle>Create new task</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid w-full items-center gap-4">
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="title">New Task</Label>
-                <Input
-                  name="title"
-                  id="title"
-                  onChange={handleChange}
-                  placeholder="New Task"
-                />
-              </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="description">Description</Label>
-                <Textarea
-                  name="description"
-                  id="description"
-                  placeholder="Description"
-                />
-              </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="category">Category</Label>
-                <Select
-                  name="category"
-                  onValueChange={(value) => setCategory(value)}
+    <Card className="w-[350px]">
+      <form method="post" onSubmit={handleSubmit}>
+        <CardHeader>
+          <CardTitle>Create new task</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid w-full items-center gap-4">
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="title">Title</Label>
+              <Input
+                name="title"
+                id="title"
+                onChange={handleChange}
+                placeholder="New Task"
+              />
+            </div>
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="description">Description</Label>
+              <Textarea
+                name="description"
+                id="description"
+                placeholder="Description"
+              />
+            </div>
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="category">Category</Label>
+              <Select
+                name="category"
+                onValueChange={(value) => setCategory(value)}
+              >
+                <SelectTrigger
+                  id="category"
+                  className={!category ? "text-muted-foreground" : ""}
                 >
-                  <SelectTrigger
-                    id="category"
-                    className={!category ? "text-muted-foreground" : ""}
-                  >
-                    <SelectValue placeholder="Select" />
-                  </SelectTrigger>
-                  <SelectContent position="popper">
-                    <SelectItem value="Personal">Personal</SelectItem>
-                    <SelectItem value="Work">Work</SelectItem>
-                    <SelectItem value="Shopping">Shopping</SelectItem>
-                    <SelectItem value="Others">Others</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="date">Deadline</Label>
-                <Popover open={datepickerOpen} onOpenChange={setDatepickerOpen}>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "font-normal",
-                        !date && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon />
-                      {date ? format(date, "PPP") : <span>Pick a date</span>}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent
-                    className="bg-popover text-popover-foreground rounded-sm shadow-lg p-1 border"
-                    align="start"
-                  >
-                    <Button
-                      variant="secondary"
-                      onClick={(event) =>
-                        handleDateButtonClick(event, new Date())
-                      }
-                    >
-                      Today
-                    </Button>
-                    <Button
-                      variant="secondary"
-                      onClick={(event) =>
-                        handleDateButtonClick(event, addDays(new Date(), 1))
-                      }
-                    >
-                      Tomorrow
-                    </Button>
-                    <Button
-                      variant="secondary"
-                      onClick={(event) =>
-                        handleDateButtonClick(event, addDays(new Date(), 7))
-                      }
-                    >
-                      Next Week
-                    </Button>
-                    <Calendar
-                      className="rounded-md border shadow"
-                      mode="single"
-                      selected={date}
-                      onSelect={(newDate) => {
-                        setDate(newDate);
-                        setDatepickerOpen(false);
-                      }}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
+                  <SelectValue placeholder="Select" />
+                </SelectTrigger>
+                <SelectContent position="popper">
+                  <SelectItem value="Personal">Personal</SelectItem>
+                  <SelectItem value="Work">Work</SelectItem>
+                  <SelectItem value="Shopping">Shopping</SelectItem>
+                  <SelectItem value="Others">Others</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-          </CardContent>
-          <CardFooter className="flex flex-row justify-between">
-            <div className="ml-auto">
-              <Button variant="outline" onClick={setCloseForm}>
-                Cancel
-              </Button>
-              <Button type="submit" disabled={isTitleEmpty}>
-                Create
-              </Button>
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="date">Deadline</Label>
+              <Popover open={datepickerOpen} onOpenChange={setDatepickerOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "font-normal",
+                      !date && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon />
+                    {date ? format(date, "PPP") : <span>Pick a date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent
+                  className="bg-popover text-popover-foreground rounded-sm shadow-lg p-1 border"
+                  align="start"
+                >
+                  <Button
+                    variant="secondary"
+                    onClick={(event) =>
+                      handleDateButtonClick(event, new Date())
+                    }
+                  >
+                    Today
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    onClick={(event) =>
+                      handleDateButtonClick(event, addDays(new Date(), 1))
+                    }
+                  >
+                    Tomorrow
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    onClick={(event) =>
+                      handleDateButtonClick(event, addDays(new Date(), 7))
+                    }
+                  >
+                    Next Week
+                  </Button>
+                  <Calendar
+                    className="rounded-md border shadow"
+                    mode="single"
+                    selected={date}
+                    onSelect={(newDate) => {
+                      setDate(newDate);
+                      setDatepickerOpen(false);
+                    }}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
-          </CardFooter>
-        </form>
-      </Card>
-    </div>
+          </div>
+        </CardContent>
+        <CardFooter className="flex flex-row justify-between">
+          <Button variant="outline" onClick={setCloseForm}>
+            Cancel
+          </Button>
+          <Button type="submit" disabled={isTitleEmpty}>
+            Create
+          </Button>
+        </CardFooter>
+      </form>
+    </Card>
   );
 }

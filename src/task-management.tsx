@@ -12,7 +12,6 @@ export function TaskManagement() {
       <HeadingOne className="text-center p-2">Momentum</HeadingOne>
       <p className="text-center p-2 pt-0">A simple task management app.</p>
       <div className="flex flex-col items-center gap-4 md:flex-row md:items-start">
-        {/* <Button onClick={() => setOpenNewTaskForm(true)}>New Task</Button> */}
         {openNewTaskForm ? (
           <NewTaskForm setCloseForm={() => setOpenNewTaskForm(false)} />
         ) : (

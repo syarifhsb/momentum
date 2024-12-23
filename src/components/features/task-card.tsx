@@ -110,8 +110,8 @@ export function TaskCardItem({ task }: { task: Task }) {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
-                      className="gap-1 h-6 data-[state=open]:bg-accent p-0.5 border"
-                      variant="ghost"
+                      className="gap-1 h-6 data-[state=open]:bg-accent p-0.5"
+                      variant={task.category ? "secondary" : "outline"}
                       size="sm"
                     >
                       <GroupIcon />
@@ -144,7 +144,14 @@ export function TaskCardItem({ task }: { task: Task }) {
                 <Popover open={datepickerOpen} onOpenChange={setDatepickerOpen}>
                   <PopoverTrigger asChild>
                     <Button
-                      variant="outline"
+                      variant={
+                        !task.date
+                          ? "outline"
+                          : Date.parse(task.date.toString()) >=
+                            new Date().getTime()
+                          ? "secondary"
+                          : "destructive"
+                      }
                       className="text-xs gap-1 h-6 data-[state=open]:bg-accent p-0.5 border"
                     >
                       <CalendarIcon className="h-3 w-3" />
