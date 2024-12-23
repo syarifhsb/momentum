@@ -4,11 +4,13 @@ import { HeadingOne } from "@/components/features/typography";
 
 export function TaskManagement() {
   return (
-    <div>
+    <div className="p-3">
       <HeadingOne className="text-center p-2">Momentum</HeadingOne>
       <p className="text-center p-2 pt-0">A simple task management app.</p>
-      <ExistingTasks />
-      <NewTaskForm />
+      <div className="flex flex-row gap-4">
+        <NewTaskForm />
+        <ExistingTasks />
+      </div>
     </div>
   );
 }

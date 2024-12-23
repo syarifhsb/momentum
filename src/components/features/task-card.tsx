@@ -1,3 +1,5 @@
+import * as React from "react";
+import { addDays, format } from "date-fns";
 import { saveTasks, Task, useTasks } from "@/features/task";
 import {
   Card,
@@ -6,20 +8,40 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { EllipsisIcon, GroupIcon, PencilIcon, TrashIcon } from "lucide-react";
+import {
+  EllipsisIcon,
+  GroupIcon,
+  PencilIcon,
+  TrashIcon,
+  CalendarIcon,
+} from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@radix-ui/react-popover";
+import { Calendar } from "@/components/ui/calendar";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuTrigger,
   DropdownMenuItem,
-} from "@radix-ui/react-dropdown-menu";
-import { DropdownMenuShortcut } from "@/components/ui/dropdown-menu";
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const categories = ["Personal", "Work", "Shopping", "Others"];
 
 export function TaskCardItem({ task }: { task: Task }) {
   const tasks = useTasks();
+  const [date, setDate] = React.useState<Date>();
+  const [datepickerOpen, setDatepickerOpen] = React.useState(false);
 
+  function handleDateButtonClick(date: Date) {
+    setDate(date);
+    setDatepickerOpen(false);
+    task.date = date;
+    saveTasks(tasks.map((t) => (t.id === task.id ? task : t)));
+  }
   function handleChangeCategory(category: string) {
     return () => {
       if (category === "remove") {
@@ -61,9 +83,7 @@ export function TaskCardItem({ task }: { task: Task }) {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="min-w-32 bg-popover text-popover-foreground rounded-sm shadow-lg cursor-pointer p-1 border">
                 <DropdownMenuItem className="flex flex-row gap-2 p-0.5 items-center rounded-sm hover:bg-primary focus:bg-primary outline-none">
-                  <span>
-                    <PencilIcon className="h-3 w-3" />
-                  </span>
+                  <PencilIcon className="h-3 w-3" />
                   <p className="text-sm">Edit</p>
                   <DropdownMenuShortcut>m</DropdownMenuShortcut>
                 </DropdownMenuItem>
@@ -71,9 +91,7 @@ export function TaskCardItem({ task }: { task: Task }) {
                   className="flex flex-row gap-2 p-0.5 items-center rounded-sm hover:bg-primary focus:bg-primary outline-none"
                   onSelect={handleDelete(task)}
                 >
-                  <span>
-                    <TrashIcon className="h-3 w-3" />
-                  </span>
+                  <TrashIcon className="h-3 w-3" />
                   <p className="text-sm">Delete</p>
                   <DropdownMenuShortcut>d</DropdownMenuShortcut>
                 </DropdownMenuItem>
@@ -98,9 +116,7 @@ export function TaskCardItem({ task }: { task: Task }) {
                   className="flex flex-row gap-1 p-0.5 items-center rounded-sm hover:bg-primary focus:bg-primary outline-none"
                   key="remove"
                 >
-                  <span>
-                    <TrashIcon className="h-3 w-3" />
-                  </span>
+                  <TrashIcon className="h-3 w-3" />
                   <p className="text-xs">Remove Category</p>
                 </DropdownMenuItem>
                 {categories.map((category) => (
@@ -115,6 +131,59 @@ export function TaskCardItem({ task }: { task: Task }) {
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
+            <Popover open={datepickerOpen} onOpenChange={setDatepickerOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="text-xs gap-1 h-6 data-[state=open]:bg-accent p-0.5 border"
+                >
+                  <CalendarIcon className="h-3 w-3" />
+                  <p>{task.date ? format(task.date, "PPP") : "No Deadline"}</p>
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent
+                className="bg-popover text-popover-foreground rounded-sm shadow-lg p-1 border"
+                align="center"
+              >
+                <div className="flex flex-row gap-1 ">
+                  <Button
+                    variant="secondary"
+                    onClick={() => handleDateButtonClick(new Date())}
+                  >
+                    Today
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    onClick={() =>
+                      handleDateButtonClick(addDays(new Date(), 1))
+                    }
+                  >
+                    Tomorrow
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    onClick={() =>
+                      handleDateButtonClick(addDays(new Date(), 7))
+                    }
+                  >
+                    Next Week
+                  </Button>
+                </div>
+                <Calendar
+                  className="rounded-md border shadow"
+                  mode="single"
+                  selected={date}
+                  onSelect={(newDate) => {
+                    setDate(newDate);
+                    setDatepickerOpen(false);
+                    if (newDate) {
+                      handleDateButtonClick(newDate);
+                    }
+                  }}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
           </div>
         </CardContent>
       </Card>

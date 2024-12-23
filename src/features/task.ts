@@ -3,6 +3,7 @@ export type Task = {
   title: string;
   description?: string;
   category?: string;
+  date?: Date;
 };
 
 export function generateId(tasks: Task[]) {

@@ -65,6 +65,7 @@ export function NewTaskForm() {
         title: newTaskData["title"].toString(),
         description: newTaskData["description"].toString(),
         category: newTaskData["category"].toString(),
+        date: date,
       },
     ]);
 
