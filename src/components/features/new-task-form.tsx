@@ -1,15 +1,14 @@
 import * as React from "react";
 import { addDays, format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { saveTasks, useTasks, generateId } from "@/features/task";
+import { saveTasks, generateId, Task } from "@/features/task";
 import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -29,13 +28,22 @@ import {
 } from "@radix-ui/react-popover";
 import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "lucide-react";
+import { DialogDescription, DialogTrigger } from "@radix-ui/react-dialog";
 
-export function NewTaskForm({ setCloseForm }: { setCloseForm: () => void }) {
-  const tasks = useTasks();
+export function NewTaskForm({
+  tasks,
+  noOfTasks,
+  setNoOfTasks,
+}: {
+  tasks: Task[];
+  noOfTasks: number;
+  setNoOfTasks: React.Dispatch<React.SetStateAction<number>>;
+}) {
   const [isTitleEmpty, setIsTitleEmpty] = React.useState(true);
   const [category, setCategory] = React.useState("");
   const [date, setDate] = React.useState<Date>();
   const [datepickerOpen, setDatepickerOpen] = React.useState(false);
+  const [formOpen, setFormOpen] = React.useState(false);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const inputData = event.currentTarget.value;
@@ -55,6 +63,7 @@ export function NewTaskForm({ setCloseForm }: { setCloseForm: () => void }) {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    console.log(event.currentTarget);
     const formData = new FormData(event.currentTarget);
     const newTaskData = Object.fromEntries(formData.entries());
 
@@ -69,17 +78,22 @@ export function NewTaskForm({ setCloseForm }: { setCloseForm: () => void }) {
       },
     ]);
 
-    setCloseForm();
-    window.location.href = `/`;
+    setFormOpen(false);
+    // window.location.href = `/`;
+    setNoOfTasks(noOfTasks + 1);
   }
 
   return (
-    <Card className="w-[350px]">
-      <form method="post" onSubmit={handleSubmit}>
-        <CardHeader>
-          <CardTitle>Create new task</CardTitle>
-        </CardHeader>
-        <CardContent>
+    <Dialog open={formOpen} onOpenChange={setFormOpen}>
+      <DialogTrigger asChild>
+        <Button variant="default">Create New Task</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Create new task</DialogTitle>
+          <DialogDescription hidden>Create a new task</DialogDescription>
+        </DialogHeader>
+        <form method="post" onSubmit={handleSubmit}>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="title">Title</Label>
@@ -118,7 +132,7 @@ export function NewTaskForm({ setCloseForm }: { setCloseForm: () => void }) {
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex flex-col space-y-1.5">
+            <div className="flex flex-col space-y-1.5 pb-4">
               <Label htmlFor="date">Deadline</Label>
               <Popover open={datepickerOpen} onOpenChange={setDatepickerOpen}>
                 <PopoverTrigger asChild>
@@ -175,16 +189,13 @@ export function NewTaskForm({ setCloseForm }: { setCloseForm: () => void }) {
               </Popover>
             </div>
           </div>
-        </CardContent>
-        <CardFooter className="flex flex-row justify-between">
-          <Button variant="outline" onClick={setCloseForm}>
-            Cancel
-          </Button>
-          <Button type="submit" disabled={isTitleEmpty}>
-            Create
-          </Button>
-        </CardFooter>
-      </form>
-    </Card>
+          <DialogFooter className="flex justify-between">
+            <Button className="w-full" type="submit" disabled={isTitleEmpty}>
+              Create
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 }

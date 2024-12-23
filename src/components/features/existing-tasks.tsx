@@ -1,4 +1,4 @@
-import { useTasks } from "@/features/task";
+import * as React from "react";
 import { TaskCardItem } from "@/components/features/task-card";
 import {
   Card,
@@ -7,26 +7,38 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Task } from "@/features/task";
 
-export function ExistingTasks() {
-  const tasks = useTasks();
+export function ExistingTasks({
+  tasks,
+  noOfTasks,
+  setNoOfTasks,
+}: {
+  tasks: Task[];
+  noOfTasks: number;
+  setNoOfTasks: React.Dispatch<React.SetStateAction<number>>;
+}) {
   return (
     <div>
       <Card className="w-[350px]">
         <CardHeader>
           <CardTitle>Existing Tasks</CardTitle>
           <CardDescription>
-            {tasks.length === 0 ? (
+            {noOfTasks === 0 ? (
               <>Good job. You have no tasks pending.</>
             ) : (
-              <>You have {tasks.length} tasks pending.</>
+              <>You have {noOfTasks} tasks pending.</>
             )}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <ul className="flex flex-col gap-4">
             {tasks.map((task) => (
-              <TaskCardItem key={task.id} task={task} />
+              <TaskCardItem
+                key={task.id}
+                task={task}
+                setNoOfTasks={setNoOfTasks}
+              />
             ))}
           </ul>
         </CardContent>

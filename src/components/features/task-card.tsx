@@ -31,7 +31,13 @@ import {
 
 const categories = ["Personal", "Work", "Shopping", "Others"];
 
-export function TaskCardItem({ task }: { task: Task }) {
+export function TaskCardItem({
+  task,
+  setNoOfTasks,
+}: {
+  task: Task;
+  setNoOfTasks: React.Dispatch<React.SetStateAction<number>>;
+}) {
   const tasks = useTasks();
   const [date, setDate] = React.useState<Date>();
   const [datepickerOpen, setDatepickerOpen] = React.useState(false);
@@ -63,6 +69,7 @@ export function TaskCardItem({ task }: { task: Task }) {
 
   function handleDelete(task: Task) {
     return () => {
+      setNoOfTasks((prev) => prev - 1);
       setIsTaskActive(false);
       saveTasks(tasks.filter((t) => t.id !== task.id));
     };

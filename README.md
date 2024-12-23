@@ -2,6 +2,10 @@
 
 This is a simple task management app that allows users to create and manage tasks. It uses React and TypeScript.
 
+## Libraries
+
+-   Shadcn-UI
+
 ## Features
 
 -   Users can create new tasks by entering a task name.
@@ -9,6 +13,7 @@ This is a simple task management app that allows users to create and manage task
 
 ## Todo List
 
--   [X] Add a delete task feature.
--   [ ] Add a modify
--   [ ] Deadline date
+-   [x] Add a delete task feature.
+-   [x] Deadline date
+-   [ ] Add modify
+-   [ ] Add keyboard shortcuts
