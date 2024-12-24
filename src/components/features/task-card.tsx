@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   addDays,
   differenceInDays,
@@ -36,23 +35,29 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useState } from "react";
 
 const categories = ["Personal", "Work", "Shopping", "Others"];
 
 export function TaskCardItem({
   task,
   setNoOfTasks,
+  setEditTask,
+  setFormOpen,
 }: {
   task: Task;
   setNoOfTasks: React.Dispatch<React.SetStateAction<number>>;
+  setEditTask: React.Dispatch<React.SetStateAction<Task | undefined>>;
+  setFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const tasks = useTasks();
-  const [date, setDate] = React.useState<Date>();
-  const [datepickerOpen, setDatepickerOpen] = React.useState(false);
-  const [isTaskActive, setIsTaskActive] = React.useState(true);
+  const [date, setDate] = useState<Date>();
+  const [datepickerOpen, setDatepickerOpen] = useState(false);
+  const [isTaskActive, setIsTaskActive] = useState(true);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   //   Question: SetCategory updates the UI, but linter does not like this method of updating the state.
-  const [, setCategory] = React.useState("");
+  const [, setCategory] = useState("");
 
   function handleDateButtonClick(date: Date) {
     setDate(date);
@@ -75,6 +80,13 @@ export function TaskCardItem({
     };
   }
 
+  function handleEdit(task: Task) {
+    return () => {
+      setEditTask(task);
+      setFormOpen(true);
+    };
+  }
+
   function handleDelete(task: Task) {
     return () => {
       setNoOfTasks((prev) => prev - 1);
@@ -94,7 +106,10 @@ export function TaskCardItem({
                   <CardTitle className="text-lg">{task.title}</CardTitle>
                   <CardDescription>{task.description}</CardDescription>
                 </div>
-                <DropdownMenu>
+                <DropdownMenu
+                  open={dropdownOpen}
+                  onOpenChange={setDropdownOpen}
+                >
                   <DropdownMenuTrigger asChild>
                     <Button
                       className="h-6 w-6 data-[state=open]:bg-accent"
@@ -105,7 +120,14 @@ export function TaskCardItem({
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="min-w-32 bg-popover text-popover-foreground rounded-sm shadow-lg cursor-pointer p-1 border">
-                    <DropdownMenuItem className="flex flex-row gap-2 p-0.5 items-center rounded-sm hover:bg-primary focus:bg-primary outline-none">
+                    <DropdownMenuItem
+                      className="flex flex-row gap-2 p-0.5 items-center rounded-sm hover:bg-primary focus:bg-primary outline-none"
+                      onSelect={(event) => {
+                        event.preventDefault();
+                        setDropdownOpen(false);
+                        handleEdit(task)();
+                      }}
+                    >
                       <PencilIcon className="h-3 w-3" />
                       <p className="text-sm">Edit</p>
                       <DropdownMenuShortcut>m</DropdownMenuShortcut>

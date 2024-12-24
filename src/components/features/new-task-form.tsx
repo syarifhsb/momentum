@@ -1,4 +1,3 @@
-import * as React from "react";
 import { addDays, format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { saveTasks, generateId, Task } from "@/features/task";
@@ -29,26 +28,37 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "lucide-react";
 import { DialogDescription, DialogTrigger } from "@radix-ui/react-dialog";
+import { useEffect, useState } from "react";
 
 export function NewTaskForm({
   tasks,
   noOfTasks,
   setNoOfTasks,
+  editTask,
+  setEditTask,
+  formOpen,
+  setFormOpen,
 }: {
   tasks: Task[];
   noOfTasks: number;
   setNoOfTasks: React.Dispatch<React.SetStateAction<number>>;
+  editTask?: Task;
+  setEditTask: React.Dispatch<React.SetStateAction<Task | undefined>>;
+  formOpen: boolean;
+  setFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const [isTitleEmpty, setIsTitleEmpty] = React.useState(true);
-  const [category, setCategory] = React.useState("");
-  const [date, setDate] = React.useState<Date>();
-  const [datepickerOpen, setDatepickerOpen] = React.useState(false);
-  const [formOpen, setFormOpen] = React.useState(false);
+  const [isTitleEmpty, setIsTitleEmpty] = useState(true);
+  const [datepickerOpen, setDatepickerOpen] = useState(false);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
+  const [date, setDate] = useState<Date>();
 
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const inputData = event.currentTarget.value;
-
-    setIsTitleEmpty(inputData.toString().trim() === "");
+  function handleOpenChange(open: boolean) {
+    setFormOpen(open);
+    if (!open) {
+      setEditTask(undefined);
+    }
   }
 
   function handleDateButtonClick(
@@ -63,34 +73,62 @@ export function NewTaskForm({
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    console.log(event.currentTarget);
     const formData = new FormData(event.currentTarget);
     const newTaskData = Object.fromEntries(formData.entries());
 
-    saveTasks([
-      ...tasks,
-      {
-        id: generateId(tasks),
-        title: newTaskData["title"].toString(),
-        description: newTaskData["description"].toString(),
-        category: newTaskData["category"].toString(),
-        // Question: Doesn't obtain the date from the form. Is this okay?
-        date: date,
-      },
-    ]);
+    if (editTask) {
+      saveTasks(
+        tasks.map((task) => {
+          if (task.id === editTask.id) {
+            task.title = newTaskData["title"].toString();
+            task.description = newTaskData["description"].toString();
+            task.category = newTaskData["category"].toString();
+            task.date = date;
+            return task;
+          } else {
+            return task;
+          }
+        })
+      );
+    } else {
+      saveTasks([
+        ...tasks,
+        {
+          id: generateId(tasks),
+          title: newTaskData["title"].toString(),
+          description: newTaskData["description"].toString(),
+          category: newTaskData["category"].toString(),
+          // Question: Doesn't obtain the date from the form. Is this okay?
+          date: date,
+        },
+      ]);
+      setNoOfTasks(noOfTasks + 1);
+    }
 
     setFormOpen(false);
-    setNoOfTasks(noOfTasks + 1);
+    setEditTask(undefined);
   }
 
+  useEffect(() => {
+    if (editTask) {
+      setIsTitleEmpty(editTask.title.trim() === "");
+      setTitle(editTask.title);
+      setDescription(editTask.description || "");
+      setCategory(editTask.category || "");
+      setDate(editTask.date);
+    }
+  }, [editTask]);
+
   return (
-    <Dialog open={formOpen} onOpenChange={setFormOpen}>
+    <Dialog open={formOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button variant="default">Create New Task</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create new task</DialogTitle>
+          <DialogTitle>
+            {editTask ? "Modify task" : "Create new task"}
+          </DialogTitle>
           <DialogDescription hidden>Submit your new task.</DialogDescription>
         </DialogHeader>
         <form method="post" onSubmit={handleSubmit}>
@@ -100,7 +138,13 @@ export function NewTaskForm({
               <Input
                 name="title"
                 id="title"
-                onChange={handleChange}
+                onChange={(event) => {
+                  setTitle(event.currentTarget.value);
+                  setIsTitleEmpty(
+                    event.currentTarget.value.toString().trim() === ""
+                  );
+                }}
+                value={title}
                 placeholder="New Task"
               />
             </div>
@@ -110,12 +154,15 @@ export function NewTaskForm({
                 name="description"
                 id="description"
                 placeholder="Description"
+                value={description}
+                onChange={(event) => setDescription(event.currentTarget.value)}
               />
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="category">Category</Label>
               <Select
                 name="category"
+                value={category}
                 onValueChange={(value) => setCategory(value)}
               >
                 <SelectTrigger
@@ -191,7 +238,7 @@ export function NewTaskForm({
           </div>
           <DialogFooter className="flex justify-between">
             <Button className="w-full" type="submit" disabled={isTitleEmpty}>
-              Create
+              {editTask ? "Save" : "Create"}
             </Button>
           </DialogFooter>
         </form>

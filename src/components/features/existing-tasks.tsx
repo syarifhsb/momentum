@@ -1,4 +1,3 @@
-import * as React from "react";
 import { TaskCardItem } from "@/components/features/task-card";
 import {
   Card,
@@ -13,10 +12,14 @@ export function ExistingTasks({
   tasks,
   noOfTasks,
   setNoOfTasks,
+  setEditTask,
+  setFormOpen,
 }: {
   tasks: Task[];
   noOfTasks: number;
   setNoOfTasks: React.Dispatch<React.SetStateAction<number>>;
+  setEditTask: React.Dispatch<React.SetStateAction<Task | undefined>>;
+  setFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   return (
     <div>
@@ -38,6 +41,8 @@ export function ExistingTasks({
                 key={task.id}
                 task={task}
                 setNoOfTasks={setNoOfTasks}
+                setEditTask={setEditTask}
+                setFormOpen={setFormOpen}
               />
             ))}
           </ul>
