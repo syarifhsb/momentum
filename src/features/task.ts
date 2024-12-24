@@ -14,7 +14,7 @@ export function useTasks() {
   const tasks: Task[] = JSON.parse(localStorage.getItem("tasks") || "[]");
   const tasksMap = tasks.map((task) => ({
     ...task,
-    date: task.date ? new Date(task.date) : new Date(),
+    date: task.date ? new Date(task.date) : undefined,
   }));
   return tasksMap;
 }

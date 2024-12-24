@@ -109,6 +109,7 @@ export function NewTaskForm({
     setEditTask(undefined);
   }
 
+  // Question: Why is this needed? I don't know how it works.
   useEffect(() => {
     if (editTask) {
       setIsTitleEmpty(editTask.title.trim() === "");
@@ -116,6 +117,12 @@ export function NewTaskForm({
       setDescription(editTask.description || "");
       setCategory(editTask.category || "");
       setDate(editTask.date);
+    } else {
+      setIsTitleEmpty(true);
+      setTitle("");
+      setDescription("");
+      setCategory("");
+      setDate(undefined);
     }
   }, [editTask]);
 
