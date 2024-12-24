@@ -7,7 +7,7 @@ import {
   isYesterday,
   startOfDay,
 } from "date-fns";
-import { saveTasks, Task, useTasks } from "@/features/task";
+import { saveDoneTasks, saveTasks, Task, useTasks } from "@/features/task";
 import {
   Card,
   CardContent,
@@ -21,6 +21,7 @@ import {
   PencilIcon,
   TrashIcon,
   CalendarIcon,
+  CheckIcon,
 } from "lucide-react";
 import {
   Popover,
@@ -55,6 +56,7 @@ export function TaskCardItem({
   const [datepickerOpen, setDatepickerOpen] = useState(false);
   const [isTaskActive, setIsTaskActive] = useState(true);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [checkButtonHover, setCheckButtonHover] = useState(false);
 
   //   Question: SetCategory updates the UI, but linter does not like this method of updating the state.
   const [, setCategory] = useState("");
@@ -95,16 +97,36 @@ export function TaskCardItem({
     };
   }
 
+  function putTaskToDone(task: Task) {
+    return () => {
+      setNoOfTasks((prev) => prev - 1);
+      setIsTaskActive(false);
+      saveDoneTasks(tasks.filter((t) => t.id !== task.id));
+      saveTasks(tasks.filter((t) => t.id !== task.id));
+    };
+  }
+
   return (
     <>
       {isTaskActive ? (
         <li>
           <Card className="min-w-[250px]">
             <CardContent className="p-3">
-              <div className="flex flex-row gap-2 justify-between">
-                <div>
-                  <CardTitle className="text-lg">{task.title}</CardTitle>
-                  <CardDescription>{task.description}</CardDescription>
+              <div className="flex flex-row gap-3 justify-between pb-3">
+                <div className="flex flex-row gap-2">
+                  <Button
+                    variant={"ghost"}
+                    className="border rounded-full h-5 w-5 p-0 mt-2 ml-1 mr-1"
+                    onMouseEnter={() => setCheckButtonHover(true)}
+                    onMouseLeave={() => setCheckButtonHover(false)}
+                    onClick={putTaskToDone(task)}
+                  >
+                    {checkButtonHover ? <CheckIcon size={5} /> : null}
+                  </Button>
+                  <div>
+                    <CardTitle className="text-lg">{task.title}</CardTitle>
+                    <CardDescription>{task.description}</CardDescription>
+                  </div>
                 </div>
                 <DropdownMenu
                   open={dropdownOpen}

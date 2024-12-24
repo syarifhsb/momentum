@@ -22,3 +22,16 @@ export function useTasks() {
 export function saveTasks(tasks: Task[]) {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
+
+export function saveDoneTasks(tasks: Task[]) {
+  localStorage.setItem("doneTasks", JSON.stringify(tasks));
+}
+
+export function useDoneTasks() {
+  const tasks: Task[] = JSON.parse(localStorage.getItem("doneTasks") || "[]");
+  const tasksMap = tasks.map((task) => ({
+    ...task,
+    date: task.date ? new Date(task.date) : undefined,
+  }));
+  return tasksMap;
+}
