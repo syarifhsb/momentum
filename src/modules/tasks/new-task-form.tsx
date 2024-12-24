@@ -1,6 +1,6 @@
 import { addDays, format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { saveTasks, generateId, Task } from "@/features/task";
+import { syncToLocalStorage, generateId, Task } from "@/modules/task";
 import {
   Dialog,
   DialogContent,
@@ -78,7 +78,7 @@ export function NewTaskForm({
     const newTaskData = Object.fromEntries(formData.entries());
 
     if (editTask) {
-      saveTasks(
+      syncToLocalStorage(
         tasks.map((task) => {
           if (task.id === editTask.id) {
             task.title = newTaskData["title"].toString();
@@ -92,7 +92,7 @@ export function NewTaskForm({
         })
       );
     } else {
-      saveTasks([
+      syncToLocalStorage([
         ...tasks,
         {
           id: generateId(tasks),

@@ -8,7 +8,12 @@ import {
   isYesterday,
   startOfDay,
 } from "date-fns";
-import { saveDoneTasks, saveTasks, Task, useTasks } from "@/features/task";
+import {
+  saveDoneTasks,
+  syncToLocalStorage,
+  Task,
+  useTasks,
+} from "@/modules/task";
 import {
   Card,
   CardContent,
@@ -66,7 +71,7 @@ export function TaskCardItem({
     setDate(date);
     setDatepickerOpen(false);
     task.date = date;
-    saveTasks(tasks.map((t) => (t.id === task.id ? task : t)));
+    syncToLocalStorage(tasks.map((t) => (t.id === task.id ? task : t)));
   }
 
   function handleChangeCategory(cat: string) {
@@ -79,7 +84,7 @@ export function TaskCardItem({
         task.category = cat;
       }
 
-      saveTasks(tasks.map((t) => (t.id === task.id ? task : t)));
+      syncToLocalStorage(tasks.map((t) => (t.id === task.id ? task : t)));
     };
   }
 
@@ -94,7 +99,7 @@ export function TaskCardItem({
     return () => {
       setNoOfTasks((prev) => prev - 1);
       setIsTaskActive(false);
-      saveTasks(tasks.filter((t) => t.id !== task.id));
+      syncToLocalStorage(tasks.filter((t) => t.id !== task.id));
 
       toast("Task has been deleted", {
         description: task.title,
@@ -107,7 +112,7 @@ export function TaskCardItem({
       setNoOfTasks((prev) => prev - 1);
       setIsTaskActive(false);
       saveDoneTasks(tasks.filter((t) => t.id !== task.id));
-      saveTasks(tasks.filter((t) => t.id !== task.id));
+      syncToLocalStorage(tasks.filter((t) => t.id !== task.id));
     };
   }
 

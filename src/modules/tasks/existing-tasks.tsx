@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Task } from "@/features/task";
+import { Task } from "@/modules/task";
 
 export function ExistingTasks({
   tasks,
@@ -28,9 +28,9 @@ export function ExistingTasks({
           <CardTitle>Existing Tasks</CardTitle>
           <CardDescription>
             {noOfTasks === 0 ? (
-              <>Good job. You have no tasks pending.</>
+              <>Good job. You have no tasks remaining.</>
             ) : (
-              <>You have {noOfTasks} tasks pending.</>
+              <>You have {noOfTasks} tasks remaining.</>
             )}
           </CardDescription>
         </CardHeader>
