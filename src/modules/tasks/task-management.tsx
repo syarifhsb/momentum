@@ -7,7 +7,7 @@ import {
   createTaskData,
 } from "@/modules/tasks/task";
 import { Button } from "@/components/ui/button";
-import { TaskCards } from "@/components/shared/task-cards";
+import { TaskCard } from "@/components/shared/task-card";
 
 export function TaskManagement() {
   const [tasks, setTasks] = useState(getSyncedTasks());
@@ -56,7 +56,11 @@ export function TaskManagement() {
         </section>
 
         <section id="tasks">
-          <TaskCards tasks={tasks} />
+          <ul className="space-y-4">
+            {tasks.map((task) => (
+              <TaskCard task={task} />
+            ))}
+          </ul>
         </section>
       </div>
     </main>
