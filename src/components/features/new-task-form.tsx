@@ -107,6 +107,11 @@ export function NewTaskForm({
 
     setFormOpen(false);
     setEditTask(undefined);
+    setIsTitleEmpty(true);
+    setTitle("");
+    setDescription("");
+    setCategory("");
+    setDate(undefined);
   }
 
   // Question: Why is this needed? I don't know how it works.
@@ -117,12 +122,6 @@ export function NewTaskForm({
       setDescription(editTask.description || "");
       setCategory(editTask.category || "");
       setDate(editTask.date);
-    } else {
-      setIsTitleEmpty(true);
-      setTitle("");
-      setDescription("");
-      setCategory("");
-      setDate(undefined);
     }
   }, [editTask]);
 
