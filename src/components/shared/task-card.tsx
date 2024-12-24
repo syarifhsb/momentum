@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, X as IconX } from "lucide-react";
 
 import { Task } from "@/modules/tasks/task";
 import {
@@ -20,6 +20,14 @@ import {
 import { toast } from "sonner";
 import { formatDate } from "@/lib/datetime";
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 export function TaskCard({
   task,
   updateTask,
@@ -38,9 +46,31 @@ export function TaskCard({
       </CardContent>
 
       <CardFooter className="flex gap-4">
-        <Button size="xs" variant={"secondary"}>
-          Category
-        </Button>
+        <div className="flex gap-1">
+          <Select>
+            <SelectTrigger
+              size={"xs"}
+              variant={"secondary"}
+              className={cn(
+                "w-[100px] border-none",
+                !task.category && "text-muted-foreground"
+              )}
+            >
+              <SelectValue placeholder={task.category || "Category"} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="general">General</SelectItem>
+              <SelectItem value="home">Home</SelectItem>
+            </SelectContent>
+          </Select>
+
+          {task.category && (
+            <Button size="icon-xs" variant={"secondary"}>
+              <IconX />
+            </Button>
+          )}
+        </div>
+
         <TaskDatePicker task={task} updateTask={updateTask} />
       </CardFooter>
     </Card>
