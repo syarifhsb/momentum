@@ -41,12 +41,8 @@ export function createTaskData(formData: FormData): Task {
   };
 }
 
-export function updateTaskData(taskId: number, formData: FormData): Task {
-  const tasks = getSyncedTasks();
+export function updateTaskData(task: Task, formData: FormData): Task {
   const hasDate = Boolean(formData.get("date"));
-
-  const task = tasks.find((task) => task.id === taskId);
-  if (!task) throw new Error("Task not found");
 
   return {
     id: task.id,

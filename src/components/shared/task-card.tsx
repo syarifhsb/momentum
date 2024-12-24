@@ -75,8 +75,8 @@ export function TaskCard({
               <SelectValue placeholder={task.category || "Category"} />
             </SelectButtonTrigger>
             <SelectContent>
-              <SelectItem value="general">General</SelectItem>
-              <SelectItem value="home">Home</SelectItem>
+              <SelectItem value="General">General</SelectItem>
+              <SelectItem value="Home">Home</SelectItem>
             </SelectContent>
           </Select>
 
@@ -162,7 +162,8 @@ export function DialogUpdateTask({
 
     try {
       const formData = new FormData(event.currentTarget);
-      const updatedTask = updateTaskData(task.id, formData);
+      formData.set("date", selectedDate?.toString() || "");
+      const updatedTask = updateTaskData(task, formData);
       updateTaskState(updatedTask);
       setOpen(false);
     } catch (error: Error | any) {
@@ -233,9 +234,9 @@ export function DialogUpdateTask({
             <input
               hidden
               name="date"
-              type="date"
+              type="text"
               defaultValue={selectedDate?.toString()}
-              // only being used when submitted
+              // Only set once first, then being used when submitted
             />
             <Popover>
               <PopoverTrigger asChild>
@@ -258,7 +259,7 @@ export function DialogUpdateTask({
               <PopoverContent className="w-auto p-0">
                 <Calendar
                   mode="single"
-                  selected={task.date} // defaultValue
+                  selected={selectedDate} // defaultValue
                   onSelect={setSelectedDate}
                   initialFocus
                 />

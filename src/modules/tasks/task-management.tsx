@@ -196,8 +196,8 @@ export function DialogAddTask({
                 <SelectValue placeholder={"Category"} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="general">General</SelectItem>
-                <SelectItem value="home">Home</SelectItem>
+                <SelectItem value="General">General</SelectItem>
+                <SelectItem value="Home">Home</SelectItem>
               </SelectContent>
             </Select>
           </div>
