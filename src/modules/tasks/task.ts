@@ -26,3 +26,14 @@ export function syncTasks(tasks: Task[]) {
 export function getTasksCount(tasks: Task[]) {
   return tasks.length;
 }
+
+export function createTaskData(tasks: Task[], formData: any) {
+  return {
+    id: tasks.length + 1,
+    title: formData.title,
+    description: formData.description,
+    category: formData.category,
+    isDone: false,
+    date: new Date(),
+  };
+}

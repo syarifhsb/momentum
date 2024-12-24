@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { HeadingTwo } from "@/components/ui/typography";
-import { getTasksCount, getSyncedTasks } from "@/modules/tasks/task";
+import {
+  getTasksCount,
+  getSyncedTasks,
+  syncTasks,
+  createTaskData,
+} from "@/modules/tasks/task";
 import { Button } from "@/components/ui/button";
 import { TaskCards } from "@/components/shared/task-cards";
 
@@ -9,19 +14,27 @@ export function TaskManagement() {
   const tasksCount = getTasksCount(tasks);
 
   function addTask() {
-    const newTask = {
-      id: tasks.length + 1,
+    const newTask = createTaskData(tasks, {
       title: `Task ${tasks.length + 1}`,
-      isDone: false,
-      date: new Date(),
-    };
-    setTasks([...tasks, newTask]);
+      description: `Description for Task ${tasks.length + 1}`,
+      category: "General",
+    });
+
+    const updatedTasks = [...tasks, newTask];
+
+    setTasks(updatedTasks);
+    syncTasks(updatedTasks);
+  }
+
+  function deleteTasks() {
+    setTasks([]);
+    syncTasks([]);
   }
 
   return (
     <main className="p-3 flex justify-center">
-      <div>
-        <section className="w-full max-w-lg flex justify-between">
+      <div className="w-full max-w-lg space-y-4">
+        <section id="panel" className="flex justify-between">
           <div>
             <HeadingTwo>Tasks</HeadingTwo>
             {tasksCount <= 0 && (
@@ -32,12 +45,17 @@ export function TaskManagement() {
             {tasksCount > 0 && <p>You have {tasksCount} tasks remaining.</p>}
           </div>
 
-          <div>
-            <Button onClick={addTask}>Add Task</Button>
+          <div className="flex gap-2">
+            <Button size="sm" onClick={addTask}>
+              Add Task
+            </Button>
+            <Button size="sm" onClick={deleteTasks} variant={"destructive"}>
+              Delete Tasks
+            </Button>
           </div>
         </section>
 
-        <section>
+        <section id="tasks">
           <TaskCards tasks={tasks} />
         </section>
       </div>
