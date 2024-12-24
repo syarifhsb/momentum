@@ -5,6 +5,7 @@ import {
   getSyncedTasks,
   syncTasks,
   createTaskData,
+  Task,
 } from "@/modules/tasks/task";
 import { Button } from "@/components/ui/button";
 import { TaskCard } from "@/components/shared/task-card";
@@ -29,6 +30,15 @@ export function TaskManagement() {
   function deleteTasks() {
     setTasks([]);
     syncTasks([]);
+  }
+
+  function updateTask(updatedTask: Task) {
+    const updatedTasks = tasks.map((task) =>
+      task.id === updatedTask.id ? updatedTask : task
+    );
+
+    setTasks(updatedTasks);
+    syncTasks(updatedTasks);
   }
 
   return (
@@ -58,7 +68,7 @@ export function TaskManagement() {
         <section id="tasks">
           <ul className="space-y-4">
             {tasks.map((task) => (
-              <TaskCard task={task} />
+              <TaskCard key={task.id} task={task} updateTask={updateTask} />
             ))}
           </ul>
         </section>

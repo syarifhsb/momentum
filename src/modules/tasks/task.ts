@@ -3,7 +3,7 @@ export type Task = {
   title: string;
   description?: string;
   category?: string;
-  date?: Date;
+  date: Date | undefined;
   isDone: boolean;
 };
 

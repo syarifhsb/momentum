@@ -20,7 +20,13 @@ import {
 import { toast } from "sonner";
 import { formatDate } from "@/lib/datetime";
 
-export function TaskCard({ task }: { task: Task }) {
+export function TaskCard({
+  task,
+  updateTask,
+}: {
+  task: Task;
+  updateTask: (task: Task) => void;
+}) {
   return (
     <Card>
       <CardHeader>
@@ -35,17 +41,27 @@ export function TaskCard({ task }: { task: Task }) {
         <Button size="xs" variant={"secondary"}>
           Category
         </Button>
-        <TaskDatePicker date={task.date} />
+        <TaskDatePicker task={task} updateTask={updateTask} />
       </CardFooter>
     </Card>
   );
 }
 
-export function TaskDatePicker({ date }: { date: Date | undefined }) {
-  function handleSelectData(selectedDate: Date | undefined) {
-    toast.success("Selected date", {
-      description: formatDate(selectedDate),
-    });
+export function TaskDatePicker({
+  task,
+  updateTask,
+}: {
+  task: Task;
+  updateTask: (task: Task) => void;
+}) {
+  function handleSelectDate(selectedDate: Date | undefined) {
+    updateTask({ ...task, date: selectedDate });
+
+    if (selectedDate) {
+      toast("Selected date", { description: formatDate(selectedDate) });
+    } else {
+      toast("Removed date");
+    }
   }
 
   return (
@@ -56,18 +72,18 @@ export function TaskDatePicker({ date }: { date: Date | undefined }) {
           variant={"secondary"}
           className={cn(
             "w-[180px] pl-3 text-left font-normal",
-            !date && "text-muted-foreground"
+            !task.date && "text-muted-foreground"
           )}
         >
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
+          {task.date ? format(task.date, "PPP") : <span>Pick a task date</span>}
           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           mode="single"
-          selected={date}
-          onSelect={handleSelectData}
+          selected={task.date}
+          onSelect={handleSelectDate}
           initialFocus
         />
       </PopoverContent>
