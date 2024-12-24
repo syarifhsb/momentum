@@ -39,7 +39,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { toast } from "sonner";
-import { Debug } from "@/components/ui/debug";
 
 export function TaskManagement() {
   const [tasks, setTasks] = useState(getSyncedTasks());
@@ -102,7 +101,7 @@ export function TaskManagement() {
             <Button size="sm" onClick={seedTasksState}>
               Seed Tasks
             </Button>
-            <DialogNewTask addTaskState={addTaskState} />
+            <DialogAddTask addTaskState={addTaskState} />
             <Button
               size="sm"
               onClick={deleteTasksState}
@@ -126,18 +125,16 @@ export function TaskManagement() {
           </ul>
         </section>
       </div>
-
-      <Debug>{tasks}</Debug>
     </main>
   );
 }
 
-export function DialogNewTask({
+export function DialogAddTask({
   addTaskState,
 }: {
   addTaskState: (task: Task) => void;
 }) {
-  const [date, setDate] = useState<Date>();
+  const [selectedDate, setSelectedDate] = useState<Date>();
   const [open, setOpen] = useState(false);
 
   function handleSubmitTask(event: React.FormEvent<HTMLFormElement>) {
@@ -211,7 +208,7 @@ export function DialogNewTask({
               hidden
               name="date"
               type="text"
-              defaultValue={date?.toString()}
+              defaultValue={selectedDate?.toString()}
               // OPTION: Format from date string into YYYY-MM-DD if the type="date"
             />
             <Popover>
@@ -221,18 +218,22 @@ export function DialogNewTask({
                   variant={"outline"}
                   className={cn(
                     "w-full justify-start text-left font-normal",
-                    !date && "text-muted-foreground"
+                    !selectedDate && "text-muted-foreground"
                   )}
                 >
                   <CalendarIcon />
-                  {date ? format(date, "PPP") : <span>Pick a date</span>}
+                  {selectedDate ? (
+                    format(selectedDate, "PPP")
+                  ) : (
+                    <span>Pick a date</span>
+                  )}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0">
                 <Calendar
                   mode="single"
-                  selected={date}
-                  onSelect={setDate}
+                  selected={selectedDate}
+                  onSelect={setSelectedDate}
                   initialFocus
                 />
               </PopoverContent>

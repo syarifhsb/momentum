@@ -89,6 +89,8 @@ export function TaskCard({
 
         <TaskDatePicker task={task} updateTaskState={updateTaskState} />
 
+        <DialogUpdateTask task={task} updateTaskState={updateTaskState} />
+
         <Button
           size="xs"
           variant={"destructive"}
@@ -145,14 +147,14 @@ export function TaskDatePicker({
   );
 }
 
-export function DialogNewTask({
+export function DialogUpdateTask({
   task,
   updateTaskState,
 }: {
   task: Task;
   updateTaskState: (task: Task) => void;
 }) {
-  const [date, setDate] = useState<Date>();
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(task.date);
   const [open, setOpen] = useState(false);
 
   function handleSubmitTask(event: React.FormEvent<HTMLFormElement>) {
@@ -171,7 +173,7 @@ export function DialogNewTask({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm">Update Task</Button>
+        <Button size="xs">Update</Button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-[425px]">
@@ -192,6 +194,7 @@ export function DialogNewTask({
               required
               id="title"
               placeholder="Eat some breakfast"
+              defaultValue={task.title}
             />
           </div>
 
@@ -203,6 +206,7 @@ export function DialogNewTask({
               name="description"
               id="description"
               placeholder="Describe the breakfast you want to eat"
+              defaultValue={task.description}
             />
           </div>
 
@@ -212,7 +216,10 @@ export function DialogNewTask({
             </Label>
             <Select name="category">
               <SelectTrigger>
-                <SelectValue placeholder={"Category"} />
+                <SelectValue
+                  placeholder={"Category"}
+                  defaultValue={task.category}
+                />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="General">General</SelectItem>
@@ -227,7 +234,7 @@ export function DialogNewTask({
               hidden
               name="date"
               type="date"
-              defaultValue={date?.toString()}
+              defaultValue={selectedDate?.toString()}
               // only being used when submitted
             />
             <Popover>
@@ -237,18 +244,22 @@ export function DialogNewTask({
                   variant={"outline"}
                   className={cn(
                     "w-full justify-start text-left font-normal",
-                    !date && "text-muted-foreground"
+                    !selectedDate && "text-muted-foreground"
                   )}
                 >
                   <CalendarIcon />
-                  {date ? format(date, "PPP") : <span>Pick a date</span>}
+                  {selectedDate ? (
+                    format(selectedDate, "PPP")
+                  ) : (
+                    <span>Pick a date</span>
+                  )}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0">
                 <Calendar
                   mode="single"
-                  selected={date}
-                  onSelect={setDate}
+                  selected={task.date} // defaultValue
+                  onSelect={setSelectedDate}
                   initialFocus
                 />
               </PopoverContent>
