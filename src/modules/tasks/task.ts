@@ -27,13 +27,35 @@ export function getTasksCount(tasks: Task[]) {
   return tasks.length;
 }
 
-export function createTaskData(tasks: Task[], formData: any) {
+export function createTaskData(formData: FormData): Task {
+  const tasks = getSyncedTasks();
+  const hasDate = Boolean(formData.get("date"));
+
   return {
     id: tasks.length + 1,
-    title: formData.title,
-    description: formData.description,
-    category: formData.category,
+    title: String(formData.get("title")),
+    description: formData.get("description")?.toString(),
+    category: formData.get("category")?.toString(),
+    date: hasDate ? new Date(String(formData.get("date"))) : undefined,
     isDone: false,
-    date: new Date(),
   };
 }
+
+export function updateTaskData(taskId: number, formData: FormData): Task {
+  const tasks = getSyncedTasks();
+  const hasDate = Boolean(formData.get("date"));
+
+  const task = tasks.find((task) => task.id === taskId);
+  if (!task) throw new Error("Task not found");
+
+  return {
+    id: task.id,
+    title: formData.get("title")?.toString() || task.title,
+    description: formData.get("description")?.toString() || task.description,
+    category: formData.get("category")?.toString() || task.category,
+    date: hasDate ? new Date(String(formData.get("date"))) : task.date,
+    isDone: task.isDone,
+  };
+}
+
+// TODO: Generate ID function
