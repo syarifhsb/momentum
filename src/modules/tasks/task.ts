@@ -23,6 +23,6 @@ export function syncTasks(tasks: Task[]) {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-export function getCountOfTasks(tasks: Task[]) {
+export function getTasksCount(tasks: Task[]) {
   return tasks.length;
 }
