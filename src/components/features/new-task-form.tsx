@@ -29,6 +29,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "lucide-react";
 import { DialogDescription, DialogTrigger } from "@radix-ui/react-dialog";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export function NewTaskForm({
   tasks,
@@ -104,6 +105,10 @@ export function NewTaskForm({
       ]);
       setNoOfTasks(noOfTasks + 1);
     }
+
+    toast("Task has been created", {
+      description: newTaskData["title"].toString(),
+    });
 
     setFormOpen(false);
     setEditTask(undefined);

@@ -3,6 +3,7 @@ import { ExistingTasks } from "@/components/features/existing-tasks";
 import { HeadingOne } from "@/components/features/typography";
 import { useState } from "react";
 import { Task, useTasks } from "./features/task";
+import { Toaster } from "sonner";
 
 export function TaskManagement() {
   const tasks = useTasks();
@@ -31,6 +32,8 @@ export function TaskManagement() {
           setEditTask={setEditTask}
           setFormOpen={setFormOpen}
         />
+
+        <Toaster />
       </div>
     </div>
   );

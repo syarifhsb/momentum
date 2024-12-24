@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   addDays,
   differenceInDays,
@@ -36,7 +37,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useState } from "react";
+import { toast } from "sonner";
 
 const categories = ["Personal", "Work", "Shopping", "Others"];
 
@@ -94,6 +95,10 @@ export function TaskCardItem({
       setNoOfTasks((prev) => prev - 1);
       setIsTaskActive(false);
       saveTasks(tasks.filter((t) => t.id !== task.id));
+
+      toast("Task has been deleted", {
+        description: task.title,
+      });
     };
   }
 
