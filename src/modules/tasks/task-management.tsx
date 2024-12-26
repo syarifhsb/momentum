@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 
@@ -158,6 +159,8 @@ export function DialogAddTask({
     }
   }
 
+  const { register, handleSubmit } = useForm();
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -176,10 +179,10 @@ export function DialogAddTask({
               Title
             </Label>
             <Input
-              name="title"
               required
               id="title"
               placeholder="Eat some breakfast"
+              {...register("title", { required: true })}
             />
           </div>
 
@@ -188,9 +191,9 @@ export function DialogAddTask({
               Description
             </Label>
             <Textarea
-              name="description"
               id="description"
               placeholder="Describe the breakfast you want to eat"
+              {...register("description")}
             />
           </div>
 
@@ -198,7 +201,7 @@ export function DialogAddTask({
             <Label htmlFor="category" className="text-right">
               Category
             </Label>
-            <Select name="category">
+            <Select {...register("category")}>
               <SelectTrigger>
                 <SelectValue placeholder={"Category"} />
               </SelectTrigger>
@@ -213,9 +216,9 @@ export function DialogAddTask({
             <Label htmlFor="date">Date</Label>
             <input
               hidden
-              name="date"
               type="text"
               defaultValue={selectedDate?.toString()}
+              {...register("date")}
               // OPTION: Format from date string into YYYY-MM-DD if the type="date"
             />
             <Popover>
