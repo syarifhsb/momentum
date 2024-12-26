@@ -68,6 +68,10 @@ export function TaskManagement() {
     const updatedTasks = tasks.filter((task) => task.id !== taskId);
     setTasks(updatedTasks);
     syncTasks(updatedTasks);
+    // Question: The toast.success is different between run and built ones
+    toast.success("Task has been deleted", {
+      description: tasks.find((task) => task.id === taskId)?.title,
+    });
   }
 
   function deleteTasksState() {

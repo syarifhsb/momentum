@@ -51,6 +51,25 @@ export function TaskCard({
   updateTaskState: (task: Task) => void;
   deleteTaskState: (taskId: number) => void;
 }) {
+  function handleChangeCategory(value: string) {
+    task.category = value;
+
+    updateTaskState(task);
+  }
+
+  function handleRemoveCategory() {
+    // Question: Why does this work?
+    return () => {
+      task.category = "";
+
+      updateTaskState(task);
+    };
+
+    // And this doesn't work?
+    // task.category = "";
+    // updateTaskState(task);
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -63,7 +82,7 @@ export function TaskCard({
 
       <CardFooter className="flex gap-4">
         <div className="flex gap-1">
-          <Select>
+          <Select onValueChange={handleChangeCategory} value={task.category}>
             <SelectButtonTrigger
               size={"xs"}
               variant={"secondary"}
@@ -81,7 +100,12 @@ export function TaskCard({
           </Select>
 
           {task.category && (
-            <Button size="icon-xs" variant={"secondary"}>
+            <Button
+              size="icon-xs"
+              variant={"secondary"}
+              onClick={handleRemoveCategory()}
+              // onClick={handleRemoveCategory}
+            >
               <IconX />
             </Button>
           )}
