@@ -147,9 +147,12 @@ export function DialogAddTask({
     try {
       const formData = new FormData(event.currentTarget);
       const createdTask = createTaskData(formData);
-
-      addTaskState(createdTask);
-      setOpen(false);
+      if (createdTask) {
+        addTaskState(createdTask);
+        setOpen(false);
+      } else {
+        toast.error("Failed to add task", { description: "Invalid data" });
+      }
     } catch (error: Error | any) {
       toast.error("Failed to add task", { description: error.message });
     }

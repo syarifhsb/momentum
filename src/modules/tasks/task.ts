@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export type Task = {
   id: number;
   title: string;
@@ -27,18 +29,35 @@ export function getTasksCount(tasks: Task[]) {
   return tasks.length;
 }
 
-export function createTaskData(formData: FormData): Task {
+export function createTaskData(formData: FormData): Task | null {
   const tasks = getSyncedTasks();
   const hasDate = Boolean(formData.get("date"));
+  const titleSchema = z.string().min(1);
+  const descriptionSchema = z.string();
+  const categorySchema = z.string();
+  // const dateSchema = z.string().min(1);
 
-  return {
-    id: tasks.length + 1,
-    title: String(formData.get("title")),
-    description: formData.get("description")?.toString(),
-    category: formData.get("category")?.toString(),
-    date: hasDate ? new Date(String(formData.get("date"))) : undefined,
-    isDone: false,
-  };
+  if (
+    titleSchema.safeParse(formData.get("title")).success &&
+    descriptionSchema.safeParse(formData.get("description")).success &&
+    categorySchema.safeParse(formData.get("category")).success
+    // dateSchema.safeParse(formData.get("date")).success
+  ) {
+    const newTask = updateTaskData(
+      {
+        id: generateId(tasks),
+        title: String(formData.get("title")),
+        description: formData.get("description")?.toString(),
+        category: formData.get("category")?.toString(),
+        date: hasDate ? new Date(String(formData.get("date"))) : undefined,
+        isDone: false,
+      },
+      formData
+    );
+    return newTask;
+  } else {
+    return null;
+  }
 }
 
 export function updateTaskData(task: Task, formData: FormData): Task {
@@ -53,5 +72,3 @@ export function updateTaskData(task: Task, formData: FormData): Task {
     isDone: task.isDone,
   };
 }
-
-// TODO: Generate ID function
