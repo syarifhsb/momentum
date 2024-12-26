@@ -80,7 +80,7 @@ export function TaskCard({
         <div>{task.description}</div>
       </CardContent>
 
-      <CardFooter className="flex gap-4">
+      <CardFooter className="flex flex-row flex-wrap content-start gap-4">
         <div className="flex gap-1">
           <Select onValueChange={handleChangeCategory} value={task.category}>
             <SelectButtonTrigger

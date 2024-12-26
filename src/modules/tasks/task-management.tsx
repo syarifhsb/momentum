@@ -101,7 +101,7 @@ export function TaskManagement() {
             {tasksCount > 0 && <p>You have {tasksCount} tasks remaining.</p>}
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex flex-row flex-wrap gap-2">
             <Button size="sm" onClick={seedTasksState}>
               Seed Tasks
             </Button>
