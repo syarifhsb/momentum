@@ -188,8 +188,12 @@ export function DialogUpdateTask({
       const formData = new FormData(event.currentTarget);
       formData.set("date", selectedDate?.toString() || "");
       const updatedTask = updateTaskData(task, formData);
-      updateTaskState(updatedTask);
-      setOpen(false);
+      if (updatedTask) {
+        updateTaskState(updatedTask);
+        setOpen(false);
+      } else {
+        toast.error("Failed to update task", { description: "Invalid data" });
+      }
     } catch (error: Error | any) {
       toast.error("Failed to update task", { description: error.message });
     }
