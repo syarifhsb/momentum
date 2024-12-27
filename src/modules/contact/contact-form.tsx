@@ -3,67 +3,119 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 
-import { FieldValues, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { isValidPhoneNumber } from "libphonenumber-js";
+import { AlertError } from "@/components/ui/alert";
+
+const phoneSchema = z
+  .string()
+  .refine((value) => isValidPhoneNumber(value), {
+    message: "Invalid phone number format",
+  })
+  .or(z.literal(""));
+
+const contactFormSchema = z.object({
+  firstName: z.string().nonempty({ message: "First name is required" }),
+  lastName: z.string().nonempty({ message: "Last name is required" }),
+  email: z
+    .string()
+    .email({ message: "Please type a valid email address" })
+    .optional()
+    .or(z.literal("")),
+  phone: phoneSchema,
+  textMessage: z.string().nonempty(),
+});
+
+type ContactFormSchema = z.infer<typeof contactFormSchema>;
 
 export function ContactForm() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
-  const onSubmit = (values: FieldValues) => {
-    console.log(values);
-  };
+  } = useForm<ContactFormSchema>({ resolver: zodResolver(contactFormSchema) });
+
+  const onSubmit = handleSubmit((data) => {
+    console.log(data);
+  });
 
   return (
     <div>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-2 max-w-md "
-      >
-        <Label htmlFor="firstName">First Name</Label>
-        <Input
-          {...register("firstName", { required: "First Name is required." })}
-          type="text"
-          placeholder="John"
-        />
-        <p className="text-red-500">
-          {errors.firstName ? errors.firstName?.message?.toString() : ""}
-        </p>
+      <form onSubmit={onSubmit} className="flex flex-col gap-2 max-w-md ">
+        <div className="space-y-2">
+          <Label htmlFor="firstName">First Name</Label>
+          <Input
+            {...register("firstName")}
+            id="firstName"
+            type="text"
+            placeholder="John"
+          />
+          <div>
+            <Label htmlFor="firstName">First Name</Label>
+            <Input
+              {...register("firstName")}
+              id="firstName"
+              type="text"
+              placeholder="John"
+            />
+            {errors.firstName && (
+              <AlertError message={errors.firstName.message} />
+            )}
+          </div>
 
-        <Label htmlFor="lastName">Last Name</Label>
-        <Input
-          {...register("lastName", { required: "Last Name is required." })}
-          type="text"
-          placeholder="Doe"
-        />
-        <p className="text-red-500">
-          {errors.lastName ? errors.lastName?.message?.toString() : ""}
-        </p>
+          <div>
+            <Label htmlFor="lastName">Last Name</Label>
+            <Input
+              {...register("lastName")}
+              id="lastName"
+              type="text"
+              placeholder="Doe"
+            />
+            {errors.lastName && (
+              <AlertError message={errors.lastName.message} />
+            )}
+          </div>
 
-        <Label htmlFor="email">Email</Label>
-        <Input
-          {...register("email", {
-            required: "Email is required.",
-            pattern: { value: /^\S+@\S+$/i, message: "Invalid email address" },
-          })}
-          placeholder="john@doe.com"
-        />
-        <p className="text-red-500">
-          {errors.email ? errors.email?.message?.toString() : ""}
-        </p>
+          <div>
+            <Label htmlFor="email">Email</Label>
+            <Input
+              {...register("email")}
+              id="email"
+              placeholder="john@doe.com"
+            />
+            {errors.email && <AlertError message={errors.email.message} />}
+          </div>
 
-        <Label htmlFor="message">Message</Label>
-        <Textarea
-          {...register("message", { required: "Message is required." })}
-          rows={5}
-          cols={30}
-        />
-        <p className="text-red-500">
-          {errors.message ? errors.message?.message?.toString() : ""}
-        </p>
+          <div>
+            <Label htmlFor="phone">Phone</Label>
+            <Input
+              {...register("phone")}
+              id="phone"
+              type="tel"
+              placeholder="+1234567890"
+            />
+            {errors.phone && <AlertError message={errors.phone.message} />}
+          </div>
 
-        <Button type="submit">Submit</Button>
+          <div>
+            <Label htmlFor="textMessage">Message</Label>
+            <Textarea
+              {...register("textMessage")}
+              id="textMessage"
+              rows={5}
+              cols={30}
+            />
+            {errors.textMessage && (
+              <AlertError message={errors.textMessage.message} />
+            )}
+          </div>
+        </div>
+
+        <div>
+          <Button type="submit">Submit</Button>
+        </div>
       </form>
     </div>
   );
