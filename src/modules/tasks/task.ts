@@ -29,6 +29,11 @@ export function getTasksCount(tasks: Task[]) {
   return tasks.length;
 }
 
+export function getTaskById(id: number) {
+  const tasks = getSyncedTasks();
+  return tasks.find((task) => task.id === id);
+}
+
 export function createTaskData(formData: FormData): Task | null {
   const tasks = getSyncedTasks();
   const hasDate = Boolean(formData.get("date"));
@@ -62,13 +67,13 @@ export function updateTaskData(task: Task, formData: FormData): Task | null {
   const titleSchema = z.string().min(1);
   const descriptionSchema = z.string();
   const categorySchema = z.string();
-  // const dateSchema = z.string().min(1);
+  const dateSchema = z.string().min(1);
 
   if (
     titleSchema.safeParse(formData.get("title")).success &&
     descriptionSchema.safeParse(formData.get("description")).success &&
-    categorySchema.safeParse(formData.get("category")).success
-    // dateSchema.safeParse(formData.get("date")).success
+    categorySchema.safeParse(formData.get("category")).success &&
+    dateSchema.safeParse(formData.get("date")).success
   ) {
     const updatedTask = {
       id: task.id,

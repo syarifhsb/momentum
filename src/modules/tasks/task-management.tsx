@@ -88,47 +88,41 @@ export function TaskManagement() {
   }
 
   return (
-    <main className="p-3 flex justify-center">
-      <div className="w-full max-w-lg space-y-4">
-        <section id="panel" className="flex justify-between">
-          <div>
-            <HeadingTwo>Tasks</HeadingTwo>
-            {tasksCount <= 0 && (
-              <p className="text-green-700">
-                Good job! You have no tasks remaining.
-              </p>
-            )}
-            {tasksCount > 0 && <p>You have {tasksCount} tasks remaining.</p>}
-          </div>
+    <main>
+      <section id="panel" className="flex justify-between">
+        <div>
+          <HeadingTwo>Tasks</HeadingTwo>
+          {tasksCount <= 0 && (
+            <p className="text-green-700">
+              Good job! You have no tasks remaining.
+            </p>
+          )}
+          {tasksCount > 0 && <p>You have {tasksCount} tasks remaining.</p>}
+        </div>
 
-          <div className="flex flex-row flex-wrap gap-2">
-            <Button size="sm" onClick={seedTasksState}>
-              Seed Tasks
-            </Button>
-            <DialogAddTask addTaskState={addTaskState} />
-            <Button
-              size="sm"
-              onClick={deleteTasksState}
-              variant={"destructive"}
-            >
-              Delete Tasks
-            </Button>
-          </div>
-        </section>
+        <div className="flex flex-row flex-wrap gap-2">
+          <Button size="sm" onClick={seedTasksState}>
+            Seed Tasks
+          </Button>
+          <DialogAddTask addTaskState={addTaskState} />
+          <Button size="sm" onClick={deleteTasksState} variant={"destructive"}>
+            Delete Tasks
+          </Button>
+        </div>
+      </section>
 
-        <section id="tasks">
-          <ul className="space-y-4">
-            {tasks.map((task) => (
-              <TaskCard
-                key={task.id}
-                task={task}
-                updateTaskState={updateTaskState}
-                deleteTaskState={deleteTaskState}
-              />
-            ))}
-          </ul>
-        </section>
-      </div>
+      <section id="tasks">
+        <ul className="space-y-4">
+          {tasks.map((task) => (
+            <TaskCard
+              key={task.id}
+              task={task}
+              updateTaskState={updateTaskState}
+              deleteTaskState={deleteTaskState}
+            />
+          ))}
+        </ul>
+      </section>
     </main>
   );
 }
