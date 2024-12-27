@@ -4,8 +4,8 @@ import { BrowserRouter, Routes, Route } from "react-router";
 
 import "./index.css";
 
-import { Home } from "@/home";
-import { Contact } from "@/contact";
+import { Home } from "@/routes/home";
+import { Contact } from "@/routes/contact";
 import { Layout } from "@/components/shared/layout";
 
 createRoot(document.getElementById("root")!).render(
