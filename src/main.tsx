@@ -4,17 +4,24 @@ import { BrowserRouter, Routes, Route } from "react-router";
 
 import "./index.css";
 
-import { Home } from "@/routes/home";
-import { Contact } from "@/routes/contact";
+import { HomeRoute } from "@/routes/home";
+import { ContactRoute } from "@/routes/contact";
 import { Layout } from "@/components/shared/layout";
+import { TasksRoute } from "@/routes/tasks";
+import { TaskIdRoute } from "@/routes/tasks-id";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="/contact" element={<Contact />} />
+          <Route index element={<HomeRoute />} />
+          <Route path="/contact" element={<ContactRoute />} />
+
+          <Route path="/tasks">
+            <Route index element={<TasksRoute />} />
+            <Route path=":id" element={<TaskIdRoute />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

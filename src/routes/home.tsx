@@ -2,7 +2,7 @@ import { HeadingOne } from "@/components/ui/typography";
 import { TaskManagement } from "@/modules/tasks/task-management";
 import { Toaster } from "@/components/ui/sonner";
 
-export function Home() {
+export function HomeRoute() {
   return (
     <div className="p-3">
       <HeadingOne className="text-center p-2">Momentum</HeadingOne>
