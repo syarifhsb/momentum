@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
+import { Link } from "react-router";
 
 import { HeadingTwo } from "@/components/ui/typography";
 import {
@@ -11,7 +12,7 @@ import {
   Task,
 } from "@/modules/tasks/task";
 import { Button } from "@/components/ui/button";
-import { TaskCard } from "@/components/shared/task-card";
+import { TaskCard } from "@/modules/tasks/task-card";
 import {
   Dialog,
   DialogContent,
@@ -58,12 +59,6 @@ export function TaskManagement() {
     syncTasks(updatedTasks);
   }
 
-  function addTaskState(newTask: Task) {
-    const updatedTasks = [...tasks, newTask];
-    setTasks(updatedTasks);
-    syncTasks(updatedTasks);
-  }
-
   function deleteTaskState(taskId: number) {
     const updatedTasks = tasks.filter((task) => task.id !== taskId);
     setTasks(updatedTasks);
@@ -104,7 +99,9 @@ export function TaskManagement() {
           <Button size="sm" onClick={seedTasksState}>
             Seed Tasks
           </Button>
-          <DialogAddTask addTaskState={addTaskState} />
+          <Button asChild size="sm">
+            <Link to={`/tasks`}>Add Task</Link>
+          </Button>
           <Button size="sm" onClick={deleteTasksState} variant={"destructive"}>
             Delete Tasks
           </Button>

@@ -64,7 +64,7 @@ export function TaskIdRoute() {
   return (
     <div className="space-y-8">
       <header>
-        <HeadingOne>Update new task</HeadingOne>
+        <HeadingOne>Update task</HeadingOne>
         <p>Update existing task details</p>
       </header>
 

@@ -1,13 +1,13 @@
+import { isValidPhoneNumber } from "libphonenumber-js";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AlertError } from "@/components/ui/alert";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { isValidPhoneNumber } from "libphonenumber-js";
-import { AlertError } from "@/components/ui/alert";
 
 const phoneSchema = z
   .string()
@@ -42,8 +42,8 @@ export function ContactForm() {
   });
 
   return (
-    <div>
-      <form onSubmit={onSubmit} className="flex flex-col gap-2 max-w-md ">
+    <div className="w-full max-w-md">
+      <form onSubmit={onSubmit} className="flex flex-col gap-2 max-w-md">
         <div className="space-y-2">
           <Label htmlFor="firstName">First Name</Label>
           <Input
@@ -113,7 +113,7 @@ export function ContactForm() {
           </div>
         </div>
 
-        <div>
+        <div className="flex justify-end">
           <Button type="submit">Submit</Button>
         </div>
       </form>

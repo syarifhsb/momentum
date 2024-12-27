@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 
 import "./index.css";
 
@@ -18,6 +18,7 @@ createRoot(document.getElementById("root")!).render(
         <Route element={<Layout />}>
           <Route index element={<HomeRoute />} />
           <Route path="/contact" element={<ContactRoute />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
 
           <Route path="/tasks">
             <Route index element={<TasksRoute />} />
