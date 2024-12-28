@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 
 import {
   BinaryIcon,
+  CodeIcon,
   HardDriveDownloadIcon,
   HomeIcon,
   PhoneIcon,
@@ -56,6 +57,20 @@ export function Layout() {
                 </NavigationMenuLink>
               </NavigationMenuItem>
             ))}
+            <NavigationMenuItem key="code">
+              <NavigationMenuLink asChild>
+                <Link
+                  to="https://github.com/syarifhasibuan/momentum"
+                  target="_blank"
+                  className={cn(navigationMenuTriggerStyle(), "gap-2")}
+                >
+                  <span>
+                    <CodeIcon size={14} />
+                  </span>
+                  Code
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
         <div className="flex-[1]">

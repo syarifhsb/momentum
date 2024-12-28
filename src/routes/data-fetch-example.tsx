@@ -29,6 +29,7 @@ export function DataFetchExample() {
         Data fetched from{" "}
         <a
           href="https://amazingsafari-backend.haidar.dev/"
+          target="_blank"
           className="text-blue-600 visited:text-purple-600"
         >
           https://amazingsafari-backend.haidar.dev

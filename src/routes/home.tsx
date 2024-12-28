@@ -8,7 +8,7 @@ export function HomeRoute() {
       <HeadingOne className="text-center">Momentum</HeadingOne>
       <p className="text-center p-2 pt-0">
         A simple task management app. Also, visit other pages on navigation bar
-        to explore other react usage demonstrations.
+        to explore other react functionality and library demonstrations.
       </p>
 
       <TaskManagement />

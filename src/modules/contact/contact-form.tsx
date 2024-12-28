@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 const phoneSchema = z
   .string()
@@ -16,17 +17,31 @@ const phoneSchema = z
   })
   .or(z.literal(""));
 
-const contactFormSchema = z.object({
-  firstName: z.string().nonempty({ message: "First name is required" }),
-  lastName: z.string().nonempty({ message: "Last name is required" }),
-  email: z
-    .string()
-    .email({ message: "Please type a valid email address" })
-    .optional()
-    .or(z.literal("")),
-  phone: phoneSchema,
-  textMessage: z.string().nonempty(),
-});
+const contactFormSchema = z
+  .object({
+    firstName: z.string().nonempty({ message: "First name is required" }),
+    lastName: z.string().nonempty({ message: "Last name is required" }),
+    email: z
+      .string()
+      .email({ message: "Please type a valid email address" })
+      .or(z.literal("")),
+    phone: phoneSchema,
+    textMessage: z.string().nonempty(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.email.length == 0 && data.phone.length == 0) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Email or phone number is required",
+        path: ["email"],
+      });
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Email or phone number is required",
+        path: ["phone"],
+      });
+    }
+  });
 
 type ContactFormSchema = z.infer<typeof contactFormSchema>;
 
@@ -39,19 +54,24 @@ export function ContactForm() {
 
   const onSubmit = handleSubmit((data) => {
     console.log(data);
+    toast.message("Form submitted", {
+      description: (
+        <div>
+          <p>First name: {data.firstName}</p>
+          <p>Last name: {data.lastName}</p>
+          <p>Email: {data.email}</p>
+          <p>Phone: {data.phone}</p>
+          <p>Message: {data.textMessage}</p>
+        </div>
+      ),
+    });
   });
 
+  console.log(errors);
   return (
     <div className="w-full max-w-md">
       <form onSubmit={onSubmit} className="flex flex-col gap-2 max-w-md">
         <div className="space-y-2">
-          <Label htmlFor="firstName">First Name</Label>
-          <Input
-            {...register("firstName")}
-            id="firstName"
-            type="text"
-            placeholder="John"
-          />
           <div>
             <Label htmlFor="firstName">First Name</Label>
             <Input

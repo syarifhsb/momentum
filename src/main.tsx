@@ -10,7 +10,7 @@ import { Layout } from "@/components/shared/layout";
 import { TasksRoute } from "@/routes/tasks";
 import { TaskIdRoute } from "@/routes/tasks-id";
 import { Toaster } from "@/components/ui/sonner";
-import { CounterRoute } from "@/routes/counter";
+import { CounterRoute } from "@/routes/counter-route";
 import { DataFetchExample } from "./routes/data-fetch-example";
 
 createRoot(document.getElementById("root")!).render(

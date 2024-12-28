@@ -1,22 +1,10 @@
 import { useReducer } from "react";
 
-import { HeadingOne } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
+import { HeadingOne } from "@/components/ui/typography";
+import { reducerCounter } from "@/routes/counter-route";
 
-export const reducerCounter = (state: any, action: any) => {
-  switch (action.type) {
-    case "increment":
-      return { count: state.count + 1 };
-    case "decrement":
-      return { count: state.count - 1 };
-    case "reset":
-      return { count: 0 };
-    default:
-      throw new Error();
-  }
-};
-
-export function CounterRoute() {
+export function Counter() {
   const [state, dispatch] = useReducer(reducerCounter, { count: 0 });
 
   return (
@@ -29,12 +17,17 @@ export function CounterRoute() {
 
       <div className="flex gap-2">
         <Button onClick={() => dispatch({ type: "increment" })}>
-          Increment
+          Increase
         </Button>
         <Button onClick={() => dispatch({ type: "decrement" })}>
-          Decrement
+          Decrease
         </Button>
-        <Button onClick={() => dispatch({ type: "reset" })}>Reset</Button>
+        <Button
+          variant={"destructive"}
+          onClick={() => dispatch({ type: "reset" })}
+        >
+          Reset
+        </Button>
       </div>
 
       <p className="text-center p-2 pt-0">count: {state.count}</p>

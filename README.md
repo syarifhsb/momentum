@@ -1,19 +1,18 @@
-# Task Management App
+# Momentum
 
-This is a simple task management app that allows users to create and manage tasks. It uses React and TypeScript.
+Momentum is a simple task management app that allows users to create and manage tasks. It uses React and TypeScript.
 
 ## Libraries
 
--   Shadcn-UI
+-   React
+-   Shadcn-UI for UI components
+-   React-Hook-Form
+-   Zod for form validation
+-   SWR for data fetching
 
 ## Features
 
--   Users can create new tasks by entering a task name.
--   Users can view their tasks in a list.
-
-## Todo List
-
--   [x] Add a delete task feature.
--   [x] Deadline date
--   [ ] Add modify
--   [ ] Add keyboard shortcuts
+-   Users can create new task.
+-   Users can modify task
+-   Users can view their tasks in list.
+-   Modify category and task deadline from the task list
