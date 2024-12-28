@@ -4,7 +4,7 @@ import { HeadingOne } from "@/components/ui/typography";
 import { Debug } from "@/components/ui/debug";
 
 function FetchItem() {
-  const fetcher = (...args) => fetch(...args).then((res) => res.json());
+  const fetcher = (url: any) => fetch(url).then((r) => r.json());
   const { data, error, isLoading } = useSWR(
     "https://amazingsafari-backend.haidar.dev/",
     fetcher
@@ -26,7 +26,13 @@ export function DataFetchExample() {
         A simple data fetching example to demonstrate the use of SWR hook.
       </p>
       <p className="text-center p-2 pt-0">
-        Data fetched from https://amazingsafari-backend.haidar.dev/
+        Data fetched from{" "}
+        <a
+          href="https://amazingsafari-backend.haidar.dev/"
+          className="text-blue-600 visited:text-purple-600"
+        >
+          https://amazingsafari-backend.haidar.dev
+        </a>
       </p>
       <FetchItem />
     </div>
