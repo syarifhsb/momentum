@@ -4,7 +4,7 @@ import { ContactForm } from "@/modules/contact/contact-form";
 export function ContactRoute() {
   return (
     <div className="flex flex-col items-center">
-      <HeadingOne className="text-center p-2">Contact</HeadingOne>
+      <HeadingOne>Contact</HeadingOne>
       <ContactForm />
     </div>
   );

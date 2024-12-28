@@ -10,6 +10,8 @@ import { Layout } from "@/components/shared/layout";
 import { TasksRoute } from "@/routes/tasks";
 import { TaskIdRoute } from "@/routes/tasks-id";
 import { Toaster } from "@/components/ui/sonner";
+import { CounterRoute } from "@/routes/counter";
+import { DataFetchExample } from "./routes/data-fetch-example";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -24,6 +26,9 @@ createRoot(document.getElementById("root")!).render(
             <Route index element={<TasksRoute />} />
             <Route path=":id" element={<TaskIdRoute />} />
           </Route>
+
+          <Route path="/counter" element={<CounterRoute />} />
+          <Route path="/data-fetch-example" element={<DataFetchExample />} />
         </Route>
       </Routes>
     </BrowserRouter>
