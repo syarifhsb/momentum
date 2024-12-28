@@ -38,9 +38,7 @@ export function TaskCard({
   deleteTaskState: (taskId: number) => void;
 }) {
   function handleChangeCategory(value: string) {
-    task.category = value;
-
-    updateTaskState(task);
+    updateTaskState({ ...task, category: value });
   }
 
   function handleRemoveCategory() {
