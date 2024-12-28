@@ -44,16 +44,7 @@ export function TaskCard({
   }
 
   function handleRemoveCategory() {
-    // Question: Why does this work?
-    return () => {
-      task.category = "";
-
-      updateTaskState(task);
-    };
-
-    // And this doesn't work?
-    // task.category = "";
-    // updateTaskState(task);
+    updateTaskState({ ...task, category: undefined });
   }
 
   return (
@@ -89,8 +80,7 @@ export function TaskCard({
             <Button
               size="icon-xs"
               variant={"secondary"}
-              onClick={handleRemoveCategory()}
-              // onClick={handleRemoveCategory}
+              onClick={handleRemoveCategory}
             >
               <IconX />
             </Button>
