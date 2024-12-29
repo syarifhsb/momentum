@@ -1,5 +1,4 @@
 import { Link, Outlet } from "react-router";
-import { cn } from "@/lib/utils";
 
 import {
   BinaryIcon,
@@ -11,10 +10,8 @@ import {
 import {
   NavigationMenu,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
 const navMenuItems = [
