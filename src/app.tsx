@@ -7,7 +7,7 @@ import { ContactRoute } from "@/routes/contact";
 import { Layout } from "@/components/shared/layout";
 import { TasksRoute } from "@/routes/tasks";
 import { TaskIdRoute } from "@/routes/tasks-id";
-import { CounterRoute } from "@/routes/counter-route";
+import { CounterRoute } from "@/routes/counter";
 import { FetcherRoute } from "@/routes/fetcher";
 import { Toaster } from "@/components/ui/sonner";
 
