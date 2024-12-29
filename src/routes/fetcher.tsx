@@ -7,7 +7,7 @@ function FetchItem() {
   const fetcher = (url: any) => fetch(url).then((r) => r.json());
   const { data, error, isLoading } = useSWR(
     "https://amazingsafari-backend.haidar.dev/",
-    fetcher
+    fetcher,
   );
 
   if (error) return <div>Failed to fetch data</div>;
@@ -18,7 +18,7 @@ function FetchItem() {
   return <Debug>{data}</Debug>;
 }
 
-export function DataFetchExample() {
+export function FetcherRoute() {
   return (
     <div className="flex flex-col items-center space-y-4">
       <HeadingOne>Data Fetching</HeadingOne>

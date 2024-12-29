@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import {
   BinaryIcon,
   CodeIcon,
-  HardDriveDownloadIcon,
+  DownloadIcon,
   HomeIcon,
   PhoneIcon,
 } from "lucide-react";
@@ -13,21 +13,20 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
+  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
 const navMenuItems = [
-  { name: "Home", href: "/", icon: HomeIcon },
-  { name: "Contact", href: "/contact", icon: PhoneIcon },
+  { name: "Home", to: "/", icon: HomeIcon, intent: "link" },
+  { name: "Contact", to: "/contact", icon: PhoneIcon, intent: "link" },
+  { name: "Counter", to: "/counter", icon: BinaryIcon, intent: "link" },
+  { name: "Fetcher", to: "/fetcher", icon: DownloadIcon, intent: "link" },
   {
-    name: "Counter",
-    href: "/counter",
-    icon: BinaryIcon,
-  },
-  {
-    name: "Data Fetching",
-    href: "/data-fetch-example",
-    icon: HardDriveDownloadIcon,
+    name: "GitHub",
+    href: "https://github.com/syarifhasibuan/momentum",
+    icon: CodeIcon,
+    intent: "anchor",
   },
 ];
 
@@ -37,45 +36,40 @@ export function Layout() {
   return (
     <div className="flex justify-center">
       <div className="w-full max-w-2xl space-y-4 p-4 flex flex-col min-h-screen">
-        {/* Question: why the navigation menu is not centered? */}
-        <NavigationMenu>
-          <NavigationMenuList>
+        <NavigationMenu className="flex justify-center w-full">
+          <NavigationMenuList className="flex gap-4">
             {navMenuItems.map((item) => (
               <NavigationMenuItem key={item.name}>
-                <NavigationMenuLink asChild>
-                  {
+                <NavigationMenuTrigger>
+                  {item.intent === "link" && item.to && (
                     <Link
-                      to={item.href}
-                      className={cn(navigationMenuTriggerStyle(), "gap-2")}
+                      to={item.to}
+                      className="inline-flex gap-2 items-center"
                     >
-                      <span>
-                        <item.icon size={14} />
-                      </span>
+                      <item.icon size={14} />
                       {item.name}
                     </Link>
-                  }
-                </NavigationMenuLink>
+                  )}
+                  {item.intent === "anchor" && item.href && (
+                    <a
+                      href={item.href}
+                      className="inline-flex gap-2 items-center"
+                      target="_blank"
+                    >
+                      <item.icon size={14} />
+                      {item.name}
+                    </a>
+                  )}
+                </NavigationMenuTrigger>
               </NavigationMenuItem>
             ))}
-            <NavigationMenuItem key="code">
-              <NavigationMenuLink asChild>
-                <Link
-                  to="https://github.com/syarifhasibuan/momentum"
-                  target="_blank"
-                  className={cn(navigationMenuTriggerStyle(), "gap-2")}
-                >
-                  <span>
-                    <CodeIcon size={14} />
-                  </span>
-                  Code
-                </Link>
-              </NavigationMenuLink>
-            </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
+
         <div className="flex-[1]">
           <Outlet />
         </div>
+
         <footer>
           <p className="text-center p-2 pt-0">© {year}</p>
         </footer>
