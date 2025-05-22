@@ -21,7 +21,7 @@ const navMenuItems = [
   { name: "Fetcher", to: "/fetcher", icon: DownloadIcon, intent: "link" },
   {
     name: "GitHub",
-    href: "https://github.com/syarifhasibuan/momentum",
+    href: "https://github.com/syarifhsb/momentum",
     icon: CodeIcon,
     intent: "anchor",
   },
